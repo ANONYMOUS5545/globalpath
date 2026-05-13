@@ -36,7 +36,7 @@ export default async function ScholarshipDetailPage({ params }: PageProps) {
       <PageHeader
         eyebrow={`${scholarship.country} scholarship`}
         title={scholarship.title}
-        description={`${scholarship.provider} · ${coverageLabel(scholarship.coverageType)} · Deadline ${formatDate(scholarship.deadline)}`}
+        description={`${scholarship.provider} - ${coverageLabel(scholarship.coverageType)} - Deadline ${formatDate(scholarship.deadline)}`}
       />
       <section className="py-10">
         <div className="container-page grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">

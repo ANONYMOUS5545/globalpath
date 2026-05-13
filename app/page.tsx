@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BriefcaseBusiness, CheckCircle2, GraduationCap, ShieldCheck, Sparkles, UsersRound } from "lucide-react";
+import { ArrowRight, BookOpenText, BriefcaseBusiness, CheckCircle2, GraduationCap, IdCard, Languages, Plane, ShieldCheck, Sparkles, UsersRound } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ScholarshipCard } from "@/components/ScholarshipCard";
 import { JobCard } from "@/components/JobCard";
@@ -11,7 +11,16 @@ import type { LucideIcon } from "lucide-react";
 const featureCards: Array<[LucideIcon, string, string]> = [
   [GraduationCap, "Verified scholarship access", "Only active opportunities are displayed, with clear deadlines and official application links."],
   [BriefcaseBusiness, "Remote and onsite jobs", "Jobs are separated into useful categories with plan-aware access and direct applications."],
+  [Languages, "Language training", "German, French, Dutch and English preparation stay part of the study and work pathway."],
+  [IdCard, "Visa guidance", "Visa support keeps document order, proof preparation and interview readiness in the same platform."],
+  [Plane, "Study abroad planning", "Country and programme planning connects scholarships, applications, language prep and visa readiness."],
   [ShieldCheck, "Secure application tracking", "Accounts, uploads, status updates and admin review are handled through secure routes."]
+];
+
+const pathwayCards: Array<[LucideIcon, string, string, string]> = [
+  [BookOpenText, "Language Training", "Live online German, French, Dutch and English exam preparation for study, work and visa confidence.", "/language-classes"],
+  [Plane, "Study Abroad", "Country shortlisting, programme readiness, document planning and application timelines.", "/study-abroad"],
+  [IdCard, "Visa Help", "Document ordering, financial proof preparation and interview readiness for students and professionals.", "/visas"]
 ];
 
 export default async function HomePage() {
@@ -77,6 +86,28 @@ export default async function HomePage() {
               <p className="mt-2 text-sm leading-6 text-slate-600">{body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container-page">
+          <div className="mb-8 max-w-2xl">
+            <p className="font-accent text-xs font-bold uppercase tracking-[0.28em] text-gold">Study pathway</p>
+            <h2 className="mt-2 font-heading text-3xl font-extrabold text-navy">Scholarships, language training and visa readiness in one flow</h2>
+            <p className="mt-2 text-slate-600">The platform is not only a listing directory. It supports the surrounding preparation work applicants need before they submit.</p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {pathwayCards.map(([Icon, title, body, href]) => (
+              <Link key={title} href={href} className="rounded-lg border border-slate-200 bg-white p-6 premium-shadow transition hover:-translate-y-1 hover:border-navy/30">
+                <Icon className="mb-4 text-navy" size={26} />
+                <h3 className="font-heading text-xl font-extrabold text-navy">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{body}</p>
+                <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-navy">
+                  Open <ArrowRight size={15} />
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

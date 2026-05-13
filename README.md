@@ -18,14 +18,16 @@ The legacy PHP files are intentionally left in place as migration reference mate
 
 - Premium navy/gold UI system with self-hosted Inter, Montserrat and Cinzel fonts
 - Active scholarship filtering by current deadline
-- Balanced curated European scholarship data across multiple countries
+- Expanded, balanced European scholarship data from official university and institution sources
 - Free, Premium and Premium Plus access tiers
 - Account registration and login with hashed passwords and HTTP-only sessions
 - Direct scholarship and job applications
 - CV, passport, certificates and recommendation letter upload handling
 - User dashboard and application tracking
 - Admin operations dashboard
-- Jobs split by remote, onsite and hybrid work modes
+- Jobs split by remote, onsite and hybrid work modes, with sector filtering
+- Trusted job resource directory for remote, onsite, sea, caregiver and licensing routes
+- Restored PathBot support launcher with WhatsApp handoff
 - Prisma PostgreSQL schema and seed script
 - Legacy `.php` route redirects
 - Vercel config and scheduled expired-opportunity cleanup route

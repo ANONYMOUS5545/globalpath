@@ -13,8 +13,8 @@ import "@fontsource/cinzel/700.css";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PathBot } from "@/components/PathBot";
 import { getCurrentUser } from "@/lib/auth";
-import { brand } from "@/lib/seed-data";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -48,13 +48,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <Header user={user} />
         <main>{children}</main>
         <Footer />
-        <a
-          href={`${brand.whatsappUrl}?text=Hello%20Global%20Path%20Africa%2C%20I%20need%20support`}
-          className="fixed bottom-5 right-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-sm font-bold text-white shadow-xl focus-ring"
-          aria-label="Open WhatsApp support"
-        >
-          WA
-        </a>
+        <PathBot />
       </body>
     </html>
   );

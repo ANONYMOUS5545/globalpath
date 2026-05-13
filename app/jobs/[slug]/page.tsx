@@ -36,7 +36,7 @@ export default async function JobDetailPage({ params }: PageProps) {
       <PageHeader
         eyebrow={`${workplaceLabel(job.workplaceType)} job`}
         title={job.title}
-        description={`${job.organization} · ${job.location} · Deadline ${formatDate(job.deadline)}`}
+        description={`${job.organization} - ${job.location} - Deadline ${formatDate(job.deadline)}`}
       />
       <section className="py-10">
         <div className="container-page grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">

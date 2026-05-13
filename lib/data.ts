@@ -2,7 +2,7 @@ import { accessibleTiers } from "./access";
 import { isActiveDeadline } from "./format";
 import { hasDatabaseUrl, prisma } from "./prisma";
 import { fallbackBlogPosts, fallbackJobResources, fallbackJobs, fallbackScholarships } from "./seed-data";
-import type { AccessTier, AppUser, Job, Scholarship, UserApplication } from "./types";
+import type { AccessTier, AppUser, Job, JobResource, Scholarship, UserApplication } from "./types";
 
 type ScholarshipFilters = {
   search?: string;
@@ -15,8 +15,15 @@ type ScholarshipFilters = {
 type JobFilters = {
   search?: string;
   category?: string;
+  sector?: string;
   workplace?: string;
   tier?: string;
+};
+
+type JobResourceFilters = {
+  search?: string;
+  category?: string;
+  cost?: string;
 };
 
 function normalizeNeedle(value?: string) {
@@ -48,7 +55,7 @@ export async function getScholarships(filters: ScholarshipFilters = {}, user: Ap
       where: {
         isActive: true,
         accessTier: filters.tier && allowed.includes(filters.tier as AccessTier) ? (filters.tier as AccessTier) : { in: allowed },
-        deadline: { gte: new Date() }
+        OR: [{ deadline: null }, { deadline: { gte: new Date() } }]
       },
       orderBy: [{ isFeatured: "desc" }, { deadline: "asc" }, { country: "asc" }]
     });
@@ -116,9 +123,15 @@ export async function getJobs(filters: JobFilters = {}, user: AppUser | null = n
       !filters.category ||
       (filters.category === "remote" ? item.workplaceType === "REMOTE" : item.workplaceType !== "REMOTE");
     const workplace = !filters.workplace || item.workplaceType === filters.workplace;
+    const sector = !filters.sector || item.sector === filters.sector;
     const tier = !filters.tier || item.accessTier === filters.tier;
-    return item.isActive && isActiveDeadline(item.deadline) && query && category && workplace && tier && allowed.includes(item.accessTier);
+    return item.isActive && isActiveDeadline(item.deadline) && query && category && workplace && sector && tier && allowed.includes(item.accessTier);
   });
+}
+
+export async function getJobSectors(user: AppUser | null = null) {
+  const jobs = await getJobs({}, user);
+  return [...new Set(jobs.map((job) => job.sector).filter(Boolean))].sort();
 }
 
 export async function getJob(slug: string) {
@@ -132,8 +145,8 @@ export async function getJob(slug: string) {
 export async function getPlatformStats() {
   if (hasDatabaseUrl()) {
     const [scholarships, jobs, applications, users] = await Promise.all([
-      prisma.scholarship.count({ where: { isActive: true, deadline: { gte: new Date() } } }),
-      prisma.job.count({ where: { isActive: true } }),
+      prisma.scholarship.count({ where: { isActive: true, OR: [{ deadline: null }, { deadline: { gte: new Date() } }] } }),
+      prisma.job.count({ where: { isActive: true, OR: [{ deadline: null }, { deadline: { gte: new Date() } }] } }),
       prisma.application.count(),
       prisma.user.count()
     ]);
@@ -179,12 +192,35 @@ export async function getBlogPosts() {
   return fallbackBlogPosts.filter((post) => post.isActive);
 }
 
-export async function getJobResources() {
+export async function getJobResources(filters: JobResourceFilters = {}) {
+  let items: JobResource[] = fallbackJobResources;
+
   if (hasDatabaseUrl()) {
-    return prisma.jobResource.findMany({
+    const rows = await prisma.jobResource.findMany({
       where: { isActive: true },
       orderBy: [{ isFeatured: "desc" }, { sortOrder: "asc" }]
     });
+    items = rows as JobResource[];
   }
-  return fallbackJobResources.filter((resource) => resource.isActive);
+
+  const search = normalizeNeedle(filters.search);
+  return items.filter((resource) => {
+    const query =
+      !search ||
+      [resource.title, resource.organization, resource.summary, resource.region, resource.country, resource.resourceType]
+        .join(" ")
+        .toLowerCase()
+        .includes(search);
+    const category = !filters.category || resource.category === filters.category;
+    const cost = !filters.cost || resource.applicationCostType === filters.cost;
+    return resource.isActive && query && category && cost;
+  });
+}
+
+export async function getJobResourceFacets() {
+  const resources = await getJobResources();
+  return {
+    categories: [...new Set(resources.map((resource) => resource.category))].sort(),
+    costs: [...new Set(resources.map((resource) => resource.applicationCostType))].sort()
+  };
 }

@@ -4,7 +4,7 @@ import { JobCard } from "@/components/JobCard";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { getCurrentUser } from "@/lib/auth";
-import { getJobResources, getJobs } from "@/lib/data";
+import { getJobResources, getJobs, getJobSectors } from "@/lib/data";
 import { accessTierLabel, workplaceLabel } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -26,10 +26,11 @@ export default async function JobsPage({ searchParams }: PageProps) {
   const filters = {
     search: single(params.search),
     category: single(params.category),
+    sector: single(params.sector),
     workplace: single(params.workplace),
     tier: single(params.tier)
   };
-  const [jobs, resources] = await Promise.all([getJobs(filters, user), getJobResources()]);
+  const [jobs, sectors, resources] = await Promise.all([getJobs(filters, user), getJobSectors(user), getJobResources()]);
   const remoteCount = jobs.filter((job) => job.workplaceType === "REMOTE").length;
   const onsiteCount = jobs.length - remoteCount;
 
@@ -42,7 +43,7 @@ export default async function JobsPage({ searchParams }: PageProps) {
       />
       <section className="py-10">
         <div className="container-page">
-          <form className="card-border mb-7 grid gap-3 rounded-lg bg-white p-4 premium-shadow md:grid-cols-[1.5fr_1fr_1fr_1fr_auto]">
+          <form className="card-border mb-7 grid gap-3 rounded-lg bg-white p-4 premium-shadow lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr_auto]">
             <label className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
               <input name="search" defaultValue={filters.search} placeholder="Search job, employer or sector" className="form-input pl-10" />
@@ -57,6 +58,10 @@ export default async function JobsPage({ searchParams }: PageProps) {
               {(["REMOTE", "ONSITE", "HYBRID"] as const).map((workplace) => (
                 <option key={workplace} value={workplace}>{workplaceLabel(workplace)}</option>
               ))}
+            </select>
+            <select name="sector" defaultValue={filters.sector} className="form-input">
+              <option value="">All sectors</option>
+              {sectors.map((sector) => <option key={sector} value={sector}>{sector}</option>)}
             </select>
             <select name="tier" defaultValue={filters.tier} className="form-input">
               <option value="">All visible tiers</option>
@@ -101,7 +106,7 @@ export default async function JobsPage({ searchParams }: PageProps) {
             <div className="grid gap-4 md:grid-cols-3">
               {resources.map((resource) => (
                 <article key={resource.id} className="rounded-lg border border-slate-200 bg-white p-5">
-                  <div className="mb-2 text-xs font-bold uppercase tracking-wide text-gold">{resource.category.replace("_", " ")}</div>
+                  <div className="mb-2 text-xs font-bold uppercase tracking-wide text-gold">{resource.category.split("_").join(" ")}</div>
                   <h3 className="font-heading text-lg font-extrabold text-navy">{resource.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{resource.summary}</p>
                   <a href={resource.applyUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-bold text-navy">

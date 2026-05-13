@@ -5,7 +5,7 @@ import { brand } from "@/lib/seed-data";
 export function Footer() {
   return (
     <footer className="bg-navy text-white">
-      <div className="container-page grid gap-10 py-12 md:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
+      <div className="container-page grid gap-10 py-12 md:grid-cols-[1.4fr_0.9fr_1fr_0.9fr_1.2fr]">
         <div>
           <div className="mb-4 flex items-center gap-3">
             <span className="grid h-11 w-11 place-items-center rounded-md bg-white font-accent text-lg font-bold text-navy">GP</span>
@@ -15,7 +15,7 @@ export function Footer() {
             </div>
           </div>
           <p className="max-w-sm text-sm leading-7 text-white/70">
-            A modern opportunity platform helping African students and professionals find verified scholarships, international jobs and premium application support.
+            A modern opportunity platform helping African students and professionals find verified scholarships, international jobs, language training and premium application support.
           </p>
           <div className="mt-5 flex items-center gap-2 text-sm text-white/70">
             <ShieldCheck size={16} className="text-gold" />
@@ -29,7 +29,19 @@ export function Footer() {
             <li><Link href="/scholarships">Scholarships</Link></li>
             <li><Link href="/jobs?category=remote">Remote Jobs</Link></li>
             <li><Link href="/jobs?category=onsite">Onsite Jobs</Link></li>
+            <li><Link href="/job-resources">Job Resources</Link></li>
             <li><Link href="/membership#premium">Premium Access</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="mb-4 font-heading text-sm font-bold uppercase tracking-wide text-gold">Study & Support</h3>
+          <ul className="space-y-2 text-sm text-white/70">
+            <li><Link href="/study-abroad">Study Abroad</Link></li>
+            <li><Link href="/language-classes">Language Training</Link></li>
+            <li><Link href="/visas">Visa Help</Link></li>
+            <li><Link href="/scholarship-support">Scholarship Support</Link></li>
+            <li><Link href="/blog">Blog</Link></li>
           </ul>
         </div>
 
@@ -40,12 +52,13 @@ export function Footer() {
             <li><Link href="/login">Sign In</Link></li>
             <li><Link href="/dashboard">Dashboard</Link></li>
             <li><Link href="/applications">Applications</Link></li>
+            <li><Link href="/contact">Contact</Link></li>
           </ul>
         </div>
 
         <div>
           <h3 className="mb-4 font-heading text-sm font-bold uppercase tracking-wide text-gold">Opportunity Alerts</h3>
-          <p className="mb-4 text-sm leading-6 text-white/70">Get new scholarship and job alerts curated for serious applicants.</p>
+          <p className="mb-4 text-sm leading-6 text-white/70">Get new scholarship, job and language preparation alerts curated for serious applicants.</p>
           <form action="/api/newsletter" method="post" className="flex overflow-hidden rounded-md bg-white">
             <label className="sr-only" htmlFor="footer-email">Email</label>
             <input id="footer-email" name="email" type="email" required placeholder="Email address" className="min-w-0 flex-1 px-3 py-2 text-sm text-slate-900 outline-none" />
@@ -60,7 +73,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10 py-5">
         <div className="container-page flex flex-wrap items-center justify-between gap-3 text-xs text-white/55">
-          <p>© {new Date().getFullYear()} Global Path Africa. All rights reserved.</p>
+          <p>(c) {new Date().getFullYear()} Global Path Africa. All rights reserved.</p>
           <p>Optimized for Vercel, PostgreSQL and secure direct applications.</p>
         </div>
       </div>

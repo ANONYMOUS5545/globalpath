@@ -35,7 +35,7 @@ export default async function AdminDashboardPage() {
               title="Scholarship management"
               rows={scholarships.slice(0, 8).map((item) => ({
                 title: item.title,
-                meta: `${item.provider} · ${item.country}`,
+                meta: `${item.provider} - ${item.country}`,
                 badge: accessTierLabel(item.accessTier),
                 deadline: deadlineLabel(item.deadline)
               }))}
@@ -44,7 +44,7 @@ export default async function AdminDashboardPage() {
               title="Jobs management"
               rows={jobs.slice(0, 8).map((item) => ({
                 title: item.title,
-                meta: `${item.organization} · ${item.location}`,
+                meta: `${item.organization} - ${item.location}`,
                 badge: accessTierLabel(item.accessTier),
                 deadline: deadlineLabel(item.deadline)
               }))}

@@ -1,0 +1,337 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MembershipType {
+  FREE
+  PREMIUM
+  PREMIUM_PLUS
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  PENDING
+}
+
+enum AccessTier {
+  FREE
+  PREMIUM
+  PREMIUM_PLUS
+}
+
+enum DegreeLevel {
+  UNDERGRADUATE
+  POSTGRADUATE
+  PHD
+  ALL
+}
+
+enum CoverageType {
+  FULL
+  PARTIAL
+  FELLOWSHIP
+  EXCHANGE
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  VOLUNTEER
+}
+
+enum WorkplaceType {
+  REMOTE
+  ONSITE
+  HYBRID
+}
+
+enum ApplicationType {
+  SCHOLARSHIP
+  JOB
+  VISA
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum PaymentGateway {
+  STRIPE
+  PAYPAL
+  FLUTTERWAVE
+  MPESA
+  BANK_TRANSFER
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id                 String             @id @default(cuid())
+  firstName          String
+  lastName           String
+  email              String             @unique
+  passwordHash       String
+  phone              String?
+  country            String?
+  nationality        String?
+  membershipType     MembershipType     @default(FREE)
+  membershipExpires  DateTime?
+  scholarshipAccess  Boolean            @default(false)
+  profilePhoto       String?
+  emailVerified      Boolean            @default(false)
+  verificationToken  String?
+  resetTokenHash     String?
+  resetExpires       DateTime?
+  ipAddress          String?
+  status             UserStatus         @default(ACTIVE)
+  lastLogin          DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  applications       Application[]
+  payments           Payment[]
+  sessions           Session[]
+  supportMessages    SupportMessage[]
+  notifications      Notification[]
+
+  @@index([membershipType])
+  @@index([status])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Admin {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         AdminRole @default(ADMIN)
+  createdAt    DateTime  @default(now())
+  lastLogin    DateTime?
+}
+
+model Scholarship {
+  id                  String        @id @default(cuid())
+  legacyId            Int?          @unique
+  slug                String        @unique
+  title               String
+  provider            String
+  country             String
+  region              String        @default("Europe")
+  description         String
+  eligibility         String
+  benefits            String
+  requiredDocuments   String[]
+  applicationProcess  String[]
+  deadline            DateTime?
+  officialUrl         String
+  sourceOrg           String?
+  fieldOfStudy        String?
+  degreeLevel         DegreeLevel   @default(ALL)
+  coverageType        CoverageType  @default(FULL)
+  accessTier          AccessTier    @default(FREE)
+  isFeatured          Boolean       @default(false)
+  isActive            Boolean       @default(true)
+  sourceRank          String        @default("official")
+  notes               String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  applications        Application[]
+
+  @@index([country, degreeLevel, coverageType, accessTier])
+  @@index([deadline])
+  @@index([isActive])
+}
+
+model Job {
+  id                  String        @id @default(cuid())
+  legacyId            Int?          @unique
+  slug                String        @unique
+  title               String
+  organization        String
+  location            String
+  country             String
+  description         String
+  requirements        String
+  salaryRange         String?
+  deadline            DateTime?
+  officialUrl         String
+  sourceOrg           String?
+  jobType             JobType       @default(FULL_TIME)
+  workplaceType       WorkplaceType @default(ONSITE)
+  sector              String
+  accessTier          AccessTier    @default(FREE)
+  isFeatured          Boolean       @default(false)
+  isActive            Boolean       @default(true)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  applications        Application[]
+
+  @@index([country, jobType, workplaceType, accessTier])
+  @@index([deadline])
+  @@index([isActive])
+}
+
+model Application {
+  id            String                @id @default(cuid())
+  userId        String
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          ApplicationType
+  scholarshipId String?
+  scholarship   Scholarship?          @relation(fields: [scholarshipId], references: [id], onDelete: SetNull)
+  jobId         String?
+  job           Job?                  @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  referenceId   String
+  status        ApplicationStatus     @default(SUBMITTED)
+  notes         String?
+  adminNotes    String?
+  documents     ApplicationDocument[]
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  @@unique([userId, type, referenceId])
+  @@index([status])
+  @@index([type])
+}
+
+model ApplicationDocument {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  label         String
+  fileName      String
+  mimeType      String
+  size          Int
+  storageKey    String
+  createdAt     DateTime    @default(now())
+}
+
+model Payment {
+  id            String         @id @default(cuid())
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactionId String         @unique
+  gateway       PaymentGateway
+  amount        Decimal        @db.Decimal(10, 2)
+  currency      String         @default("USD")
+  plan          String
+  status        PaymentStatus  @default(PENDING)
+  metadata      Json?
+  paymentDate   DateTime       @default(now())
+
+  @@index([userId, status])
+}
+
+model SupportMessage {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  sessionId   String?
+  name        String?
+  email       String?
+  message     String
+  reply       String?
+  isEscalated Boolean  @default(false)
+  status      String   @default("open")
+  createdAt   DateTime @default(now())
+  repliedAt   DateTime?
+}
+
+model Subscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  country      String?
+  isActive     Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+}
+
+model BlogPost {
+  id                 String   @id @default(cuid())
+  title              String
+  slug               String   @unique
+  excerpt            String
+  content            String
+  category           String   @default("guides")
+  authorName         String   @default("Global Path Africa")
+  readingTimeMinutes Int      @default(5)
+  isFeatured         Boolean  @default(false)
+  isActive           Boolean  @default(true)
+  publishedAt        DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([isActive, publishedAt])
+}
+
+model JobResource {
+  id                  String   @id @default(cuid())
+  resourceKey         String   @unique
+  title               String
+  organization        String
+  category            String   @default("general_jobs")
+  region              String   @default("Global")
+  country             String?
+  resourceType        String   @default("official_employer")
+  summary             String
+  applyUrl            String
+  applicationCostType String   @default("free")
+  costNotes           String?
+  isFeatured          Boolean  @default(false)
+  isActive            Boolean  @default(true)
+  sortOrder           Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([isActive, category, applicationCostType, sortOrder])
+}
+
+model AfricanCountry {
+  id     String @id @default(cuid())
+  name   String @unique
+  code   String
+  region String
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, readAt])
+}

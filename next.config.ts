@@ -39,7 +39,18 @@ const nextConfig: NextConfig = {
       { source: "/scholarship-support.php", destination: "/scholarship-support", permanent: true },
       { source: "/blog.php", destination: "/blog", permanent: true },
       { source: "/payments.php", destination: "/payments", permanent: true },
-      { source: "/profile.php", destination: "/profile", permanent: true }
+      { source: "/profile.php", destination: "/profile", permanent: true },
+      { source: "/admin/login.php", destination: "/admin/login", permanent: true },
+      { source: "/admin/dashboard.php", destination: "/admin", permanent: true },
+      { source: "/admin/users.php", destination: "/admin/users", permanent: true },
+      { source: "/admin/scholarships.php", destination: "/admin/scholarships", permanent: true },
+      { source: "/admin/jobs.php", destination: "/admin/jobs", permanent: true },
+      { source: "/admin/applications.php", destination: "/admin/applications", permanent: true },
+      { source: "/admin/payments.php", destination: "/admin/payments", permanent: true },
+      { source: "/admin/messages.php", destination: "/admin/messages", permanent: true },
+      { source: "/admin/subscribers.php", destination: "/admin/subscribers", permanent: true },
+      { source: "/admin/blog.php", destination: "/admin/blog", permanent: true },
+      { source: "/admin/job-resources.php", destination: "/admin/job-resources", permanent: true }
     ];
   },
   async headers() {

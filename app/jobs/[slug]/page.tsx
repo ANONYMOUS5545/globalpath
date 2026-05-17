@@ -63,7 +63,7 @@ export default async function JobDetailPage({ params }: PageProps) {
               <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-slate-700">
                 <li>Use a role-specific CV that mirrors the employer requirements.</li>
                 <li>Upload clean PDF documents and track your submission from the dashboard.</li>
-                <li>Apply on the official employer page as well if the posting requests it.</li>
+                <li>Global Path records the application first, then the support team follows the official employer route and updates your dashboard.</li>
               </ul>
             </section>
           </article>
@@ -93,7 +93,7 @@ export default async function JobDetailPage({ params }: PageProps) {
 
             <div className="card-border rounded-lg bg-white p-5 premium-shadow">
               <h2 className="mb-2 font-heading text-xl font-extrabold text-navy">Apply from Global Path</h2>
-              <p className="mb-4 text-sm leading-6 text-slate-600">Submit your documents and track review status from your member dashboard.</p>
+              <p className="mb-4 text-sm leading-6 text-slate-600">Submit through Global Path first. Your dashboard keeps the official submission trail, support notes and status feedback in one place.</p>
               {!user ? (
                 <Button href={`/login?redirect=/jobs/${job.slug}`} className="w-full">
                   Login to Apply <ArrowUpRight size={16} />

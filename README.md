@@ -25,6 +25,7 @@ The legacy PHP files are intentionally left in place as migration reference mate
 - CV, passport, certificates and recommendation letter upload handling
 - User dashboard and application tracking
 - Admin operations dashboard
+- Restored admin login and management routes for users, scholarships, jobs, applications, payments, messages, subscribers, blog, job resources, analytics and notifications
 - Jobs split by remote, onsite and hybrid work modes, with sector filtering
 - Trusted job resource directory for remote, onsite, sea, caregiver and licensing routes
 - Restored PathBot support launcher with WhatsApp handoff
@@ -111,7 +112,11 @@ npm run db:seed
 
 ## File Uploads
 
-Local uploads are stored under `UPLOAD_DIR` and ignored by Git. For Vercel production, connect `/api/applications` to durable private object storage such as Vercel Blob, S3 or Cloudflare R2 before accepting large live document uploads.
+Local uploads are stored under `UPLOAD_DIR` and ignored by Git. For Vercel production, set `FILE_STORAGE_MODE="metadata"` until durable private object storage is connected. This keeps applications working by recording document metadata for admin processing instead of relying on Vercel's ephemeral filesystem. For full file retention, connect `/api/applications` to Vercel Blob, S3 or Cloudflare R2 and switch the storage adapter accordingly.
+
+## Admin Access
+
+Open `/admin/login` and sign in with `ADMIN_EMAIL` and `ADMIN_PASSWORD`. The route bootstraps the matching admin user in PostgreSQL if needed, so the admin dashboard is not locked behind a missing migrated account.
 
 ## Security Notes
 

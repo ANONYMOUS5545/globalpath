@@ -5,7 +5,7 @@ import { brand } from "@/lib/seed-data";
 export function Footer() {
   return (
     <footer className="bg-navy text-white">
-      <div className="container-page grid gap-10 py-12 md:grid-cols-[1.4fr_0.9fr_1fr_0.9fr_1.2fr]">
+      <div className="container-page grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.4fr_0.9fr_1fr_0.9fr_1.2fr]">
         <div>
           <div className="mb-4 flex items-center gap-3">
             <span className="grid h-11 w-11 place-items-center rounded-md bg-white font-accent text-lg font-bold text-navy">GP</span>

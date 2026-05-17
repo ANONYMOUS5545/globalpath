@@ -3,12 +3,17 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
+export function getDatabaseUrl() {
+  return process.env.DATABASE_URL?.trim() || "";
+}
+
 export function hasDatabaseUrl() {
-  return Boolean(process.env.DATABASE_URL);
+  return Boolean(getDatabaseUrl());
 }
 
 function createPrismaClient() {
-  if (!process.env.DATABASE_URL) {
+  const connectionString = getDatabaseUrl();
+  if (!connectionString) {
     return new Proxy(
       {},
       {
@@ -20,7 +25,7 @@ function createPrismaClient() {
   }
 
   const adapter = new PrismaPg({
-    connectionString: process.env.DATABASE_URL
+    connectionString
   });
 
   return new PrismaClient({ adapter });

@@ -88,7 +88,7 @@ export default async function ScholarshipDetailPage({ params }: PageProps) {
             <div className="card-border rounded-lg bg-white p-5 premium-shadow">
               <h2 className="mb-2 font-heading text-xl font-extrabold text-navy">Apply from Global Path</h2>
               <p className="mb-4 text-sm leading-6 text-slate-600">
-                Create an account, attach your application documents and track updates from your dashboard.
+                Create an account, attach your documents and submit through Global Path so status feedback is tracked from your dashboard.
               </p>
               {!user ? (
                 <Button href={`/login?redirect=/scholarships/${scholarship.slug}`} className="w-full">

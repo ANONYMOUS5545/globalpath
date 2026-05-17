@@ -2,6 +2,7 @@ import { accessibleTiers } from "./access";
 import { isActiveDeadline } from "./format";
 import { hasDatabaseUrl, prisma } from "./prisma";
 import { fallbackBlogPosts, fallbackJobResources, fallbackJobs, fallbackScholarships } from "./seed-data";
+import { expandedJobResources, expandedJobs, expandedScholarships } from "./expanded-data";
 import type { AccessTier, AppUser, Job, JobResource, Scholarship, UserApplication } from "./types";
 
 type ScholarshipFilters = {
@@ -46,9 +47,13 @@ function balanceByCountry(items: Scholarship[]) {
   return balanced;
 }
 
+function uniqueById<T extends { id: string }>(items: T[]) {
+  return [...new Map(items.map((item) => [item.id, item])).values()];
+}
+
 export async function getScholarships(filters: ScholarshipFilters = {}, user: AppUser | null = null) {
   const allowed = accessibleTiers(user);
-  let items: Scholarship[] = fallbackScholarships;
+  let items: Scholarship[] = uniqueById([...fallbackScholarships, ...expandedScholarships]);
 
   if (hasDatabaseUrl()) {
     const rows = await prisma.scholarship.findMany({
@@ -88,7 +93,7 @@ export async function getScholarship(slug: string) {
     const row = await prisma.scholarship.findUnique({ where: { slug } });
     if (row && row.isActive && isActiveDeadline(row.deadline)) return row as Scholarship;
   }
-  return fallbackScholarships.find((item) => item.slug === slug && item.isActive && isActiveDeadline(item.deadline)) ?? null;
+  return uniqueById([...fallbackScholarships, ...expandedScholarships]).find((item) => item.slug === slug && item.isActive && isActiveDeadline(item.deadline)) ?? null;
 }
 
 export async function getAllVisibleScholarshipCountries() {
@@ -98,7 +103,7 @@ export async function getAllVisibleScholarshipCountries() {
 
 export async function getJobs(filters: JobFilters = {}, user: AppUser | null = null) {
   const allowed = accessibleTiers(user);
-  let items: Job[] = fallbackJobs;
+  let items: Job[] = uniqueById([...fallbackJobs, ...expandedJobs]);
 
   if (hasDatabaseUrl()) {
     const rows = await prisma.job.findMany({
@@ -139,7 +144,7 @@ export async function getJob(slug: string) {
     const row = await prisma.job.findUnique({ where: { slug } });
     if (row && row.isActive && isActiveDeadline(row.deadline)) return row as Job;
   }
-  return fallbackJobs.find((item) => item.slug === slug && item.isActive && isActiveDeadline(item.deadline)) ?? null;
+  return uniqueById([...fallbackJobs, ...expandedJobs]).find((item) => item.slug === slug && item.isActive && isActiveDeadline(item.deadline)) ?? null;
 }
 
 export async function getPlatformStats() {
@@ -154,8 +159,8 @@ export async function getPlatformStats() {
   }
 
   return {
-    scholarships: fallbackScholarships.filter((item) => item.isActive && isActiveDeadline(item.deadline)).length,
-    jobs: fallbackJobs.filter((item) => item.isActive && isActiveDeadline(item.deadline)).length,
+    scholarships: uniqueById([...fallbackScholarships, ...expandedScholarships]).filter((item) => item.isActive && isActiveDeadline(item.deadline)).length,
+    jobs: uniqueById([...fallbackJobs, ...expandedJobs]).filter((item) => item.isActive && isActiveDeadline(item.deadline)).length,
     applications: 0,
     users: 0
   };
@@ -193,7 +198,7 @@ export async function getBlogPosts() {
 }
 
 export async function getJobResources(filters: JobResourceFilters = {}) {
-  let items: JobResource[] = fallbackJobResources;
+  let items: JobResource[] = uniqueById([...fallbackJobResources, ...expandedJobResources]);
 
   if (hasDatabaseUrl()) {
     const rows = await prisma.jobResource.findMany({

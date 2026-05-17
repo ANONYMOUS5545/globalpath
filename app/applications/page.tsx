@@ -22,7 +22,10 @@ export default async function ApplicationsPage() {
         <div className="container-page">
           <div className="card-border rounded-lg bg-white p-5 premium-shadow">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="font-heading text-xl font-extrabold text-navy">All applications</h2>
+              <div>
+                <h2 className="font-heading text-xl font-extrabold text-navy">All applications</h2>
+                <p className="mt-1 text-sm text-slate-500">Every application starts here first; official submission feedback appears as admin notes.</p>
+              </div>
               <Button href="/scholarships" variant="outline">Find Opportunities</Button>
             </div>
             {applications.length ? (

@@ -7,6 +7,7 @@ import {
   fallbackJobs,
   fallbackScholarships
 } from "../lib/seed-data";
+import { expandedJobResources, expandedJobs, expandedScholarships } from "../lib/expanded-data";
 import { slugify } from "../lib/format";
 
 const prisma = new PrismaClient();
@@ -34,7 +35,7 @@ async function main() {
     });
   }
 
-  for (const scholarship of fallbackScholarships) {
+  for (const scholarship of [...fallbackScholarships, ...expandedScholarships]) {
     await prisma.scholarship.upsert({
       where: { slug: scholarship.slug },
       update: scholarship,
@@ -42,7 +43,7 @@ async function main() {
     });
   }
 
-  for (const job of fallbackJobs) {
+  for (const job of [...fallbackJobs, ...expandedJobs]) {
     await prisma.job.upsert({
       where: { slug: job.slug },
       update: job,
@@ -58,7 +59,7 @@ async function main() {
     });
   }
 
-  for (const resource of fallbackJobResources) {
+  for (const resource of [...fallbackJobResources, ...expandedJobResources]) {
     await prisma.jobResource.upsert({
       where: { resourceKey: resource.resourceKey },
       update: resource,

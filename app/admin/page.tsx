@@ -53,14 +53,17 @@ export default async function AdminDashboardPage() {
 
           <div className="grid gap-4 md:grid-cols-3">
             {[
-              ["User management", "Review active, premium and suspended users through Prisma-backed records."],
-              ["Application management", "Update status, add admin notes and audit document submissions."],
-              ["Notifications", "Use dashboard events and email hooks for application status changes."]
-            ].map(([title, body]) => (
-              <div key={title} className="rounded-lg border border-slate-200 bg-white p-5">
+              ["/admin/users", "User management", "Review active, premium and suspended users through Prisma-backed records."],
+              ["/admin/applications", "Application management", "Update status, add admin notes and audit document submissions."],
+              ["/admin/notifications", "Notifications", "Use dashboard events and email hooks for application status changes."],
+              ["/admin/payments", "Payments", "Review membership payments and transaction status."],
+              ["/admin/messages", "Support messages", "Track contact, PathBot and premium support requests."],
+              ["/admin/job-resources", "Job resources", "Maintain trusted job boards and direct employer portals."]
+            ].map(([href, title, body]) => (
+              <a key={title} href={href} className="rounded-lg border border-slate-200 bg-white p-5 transition hover:border-navy/30 hover:shadow-sm">
                 <h2 className="font-heading text-lg font-extrabold text-navy">{title}</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{body}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>

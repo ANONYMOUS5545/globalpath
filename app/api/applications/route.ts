@@ -115,10 +115,13 @@ async function resolveOpportunity(type: ApplicationType, referenceId: string) {
 }
 
 async function storeFiles(form: FormData, applicationId: string) {
+  const storageMode = process.env.FILE_STORAGE_MODE ?? (process.env.VERCEL ? "metadata" : "local");
   const uploadDir = process.env.UPLOAD_DIR ?? "./uploads";
   const maxUploadMb = Number(process.env.MAX_UPLOAD_MB ?? 8);
   const absoluteDir = path.resolve(uploadDir, applicationId);
-  await mkdir(absoluteDir, { recursive: true });
+  if (storageMode === "local") {
+    await mkdir(absoluteDir, { recursive: true });
+  }
 
   for (const field of fileFields) {
     const file = form.get(field);
@@ -128,8 +131,10 @@ async function storeFiles(form: FormData, applicationId: string) {
 
     const safeName = `${field}-${Date.now()}-${slugify(file.name)}${path.extname(file.name)}`;
     const storageKey = path.join(applicationId, safeName);
-    const bytes = Buffer.from(await file.arrayBuffer());
-    await writeFile(path.join(absoluteDir, safeName), bytes);
+    if (storageMode === "local") {
+      const bytes = Buffer.from(await file.arrayBuffer());
+      await writeFile(path.join(absoluteDir, safeName), bytes);
+    }
 
     await prisma.applicationDocument.create({
       data: {
@@ -138,7 +143,7 @@ async function storeFiles(form: FormData, applicationId: string) {
         fileName: file.name,
         mimeType: file.type,
         size: file.size,
-        storageKey
+        storageKey: storageMode === "local" ? storageKey : `metadata:${storageKey}`
       }
     });
   }

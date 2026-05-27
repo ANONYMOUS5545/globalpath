@@ -20,8 +20,11 @@ function createPrismaClient() {
     ) as PrismaClient;
   }
 
+  const databaseUrl = new URL(process.env.DATABASE_URL);
+  databaseUrl.searchParams.delete("sslmode");
+
   const pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: databaseUrl.toString(),
     ssl: {
       rejectUnauthorized: false
     }

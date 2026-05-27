@@ -161,6 +161,49 @@ export async function getPlatformStats() {
   };
 }
 
+export async function getAdminUserInsights() {
+  if (!hasDatabaseUrl()) {
+    return {
+      users: [],
+      countries: [],
+      totalUsers: 0
+    };
+  }
+
+  const [users, countries] = await Promise.all([
+    prisma.user.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        country: true,
+        membershipType: true,
+        status: true,
+        lastLogin: true,
+        createdAt: true
+      },
+      orderBy: [{ lastLogin: "desc" }, { createdAt: "desc" }],
+      take: 20
+    }),
+    prisma.user.groupBy({
+      by: ["country"],
+      _count: { country: true },
+      orderBy: { _count: { country: "desc" } },
+      take: 12
+    })
+  ]);
+
+  return {
+    users,
+    countries: countries.map((country) => ({
+      country: country.country ?? "Not provided",
+      count: country._count.country
+    })),
+    totalUsers: users.length
+  };
+}
+
 export async function getDashboardApplications(userId: string): Promise<UserApplication[]> {
   if (!hasDatabaseUrl()) return [];
 

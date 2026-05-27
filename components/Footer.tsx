@@ -19,7 +19,7 @@ export function Footer() {
           </p>
           <div className="mt-5 flex items-center gap-2 text-sm text-white/70">
             <ShieldCheck size={16} className="text-gold" />
-            Secure accounts, official sources and clear application tracking.
+            Secure accounts, curated listings and clear application tracking.
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/PageHeader";
+import { PasswordInput } from "@/components/PasswordInput";
 import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
@@ -28,10 +29,9 @@ export default async function LoginPage({ searchParams }: PageProps) {
               <span className="mb-1.5 block text-sm font-bold text-slate-700">Email address</span>
               <input name="email" type="email" required className="form-input" autoComplete="email" />
             </label>
-            <label className="mb-5 block">
-              <span className="mb-1.5 block text-sm font-bold text-slate-700">Password</span>
-              <input name="password" type="password" required className="form-input" autoComplete="current-password" />
-            </label>
+            <div className="mb-5">
+              <PasswordInput name="password" label="Password" autoComplete="current-password" />
+            </div>
             <Button type="submit" className="w-full">Sign In</Button>
             <div className="mt-5 flex justify-between text-sm">
               <Link href="/register" className="font-semibold text-navy">Create account</Link>

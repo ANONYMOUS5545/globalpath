@@ -7,7 +7,7 @@ const whatsappUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? 
 
 const replies: Record<string, string> = {
   scholarships:
-    "Use Scholarships to filter by country, level, coverage and access tier. Expired deadlines are hidden automatically, and each detail page links to the official source.",
+    "Use Scholarships to filter by country, level, coverage and access tier. Expired deadlines are hidden automatically, and applications stay inside Global Path.",
   jobs:
     "Use Jobs for direct listings and Job Resources for trusted portals such as UN Careers, World Bank, EU Careers, We Work Remotely and healthcare employer portals.",
   visa:

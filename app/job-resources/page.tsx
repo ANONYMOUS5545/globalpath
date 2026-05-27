@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, BriefcaseBusiness, Filter, Search, ShieldCheck } from "lucide-react";
+import { BriefcaseBusiness, Filter, Search, ShieldCheck } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -7,7 +7,7 @@ import { getJobResourceFacets, getJobResources } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Job Resources",
-  description: "Trusted remote and onsite job application resources with cost notes and official source links."
+  description: "Trusted remote and onsite job intelligence used by Global Path to curate listings."
 };
 
 type PageProps = {
@@ -35,8 +35,8 @@ export default async function JobResourcesPage({ searchParams }: PageProps) {
     <>
       <PageHeader
         eyebrow="Job resources"
-        title="Trusted portals for remote and onsite applications"
-        description="Use official job boards and employer portals with clear cost notes. Avoid anyone asking for money to unlock vacancies."
+        title="Curated job intelligence"
+        description="These categories inform Global Path listings. Apply from job detail pages after signing in so your submissions remain tracked."
       />
       <section className="py-10">
         <div className="container-page">
@@ -87,9 +87,7 @@ export default async function JobResourcesPage({ searchParams }: PageProps) {
                       {resource.costNotes}
                     </div>
                   ) : null}
-                  <a href={resource.applyUrl} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-navy">
-                    Open official portal <ArrowUpRight size={15} />
-                  </a>
+                  <Button href="/jobs" className="mt-5 w-full">View Matching Jobs</Button>
                 </article>
               ))}
             </div>

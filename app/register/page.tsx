@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/PageHeader";
+import { PasswordInput } from "@/components/PasswordInput";
 import { Button } from "@/components/ui/Button";
 import { africanCountries } from "@/lib/seed-data";
 
@@ -51,14 +52,8 @@ export default async function RegisterPage({ searchParams }: PageProps) {
               </select>
             </label>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <label className="block">
-                <span className="mb-1.5 block text-sm font-bold text-slate-700">Password</span>
-                <input name="password" type="password" required minLength={8} className="form-input" autoComplete="new-password" />
-              </label>
-              <label className="block">
-                <span className="mb-1.5 block text-sm font-bold text-slate-700">Confirm password</span>
-                <input name="confirmPassword" type="password" required minLength={8} className="form-input" autoComplete="new-password" />
-              </label>
+              <PasswordInput name="password" label="Password" autoComplete="new-password" minLength={8} />
+              <PasswordInput name="confirmPassword" label="Confirm password" autoComplete="new-password" minLength={8} />
             </div>
             <label className="mt-5 flex items-start gap-3 text-sm text-slate-600">
               <input name="terms" type="checkbox" required className="mt-1" />

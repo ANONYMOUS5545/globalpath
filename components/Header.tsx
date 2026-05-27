@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   BookOpenText,
@@ -12,9 +14,12 @@ import {
   Newspaper,
   Plane,
   ShieldCheck,
+  Ship,
+  Stethoscope,
   UserPen,
   UserRound
 } from "lucide-react";
+import { useRef } from "react";
 import { Button } from "./ui/Button";
 import type { AppUser } from "@/lib/types";
 import { brand } from "@/lib/seed-data";
@@ -38,18 +43,31 @@ const scholarshipNav = [
 ];
 
 const jobNav = [
-  { href: "/jobs", label: "All Jobs" },
-  { href: "/jobs?category=remote", label: "Remote Jobs" },
-  { href: "/jobs?category=onsite", label: "Onsite Jobs" },
-  { href: "/jobs?sector=International%20Development", label: "International Development" },
-  { href: "/jobs?sector=Healthcare", label: "Healthcare" },
-  { href: "/job-resources", label: "Application Resources" }
+  {
+    heading: "Work mode",
+    items: [
+      { href: "/jobs", label: "All Jobs" },
+      { href: "/jobs?category=remote", label: "Remote Jobs" },
+      { href: "/jobs?category=onsite", label: "Onsite Jobs" },
+      { href: "/jobs?workplace=HYBRID", label: "Hybrid Jobs" }
+    ]
+  },
+  {
+    heading: "Job categories",
+    items: [
+      { href: "/jobs?sector=Technology", label: "Technology" },
+      { href: "/jobs?sector=Healthcare", label: "Healthcare and Caregiver" },
+      { href: "/jobs?sector=International%20Development", label: "International Development" },
+      { href: "/jobs?sector=Maritime", label: "Sea and Cruise Jobs" },
+      { href: "/jobs?sector=Education", label: "Education" }
+    ]
+  }
 ];
 
 const mobileNav = [
   ...nav.slice(0, 1),
   ...scholarshipNav,
-  ...jobNav,
+  ...jobNav.flatMap((group) => group.items),
   ...nav.slice(1),
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -57,10 +75,16 @@ const mobileNav = [
 ];
 
 export function Header({ user }: { user: AppUser | null }) {
-  const isAdmin = user?.email.toLowerCase() === (process.env.ADMIN_EMAIL ?? "admin@globalpathafrica.org").toLowerCase();
+  const isAdmin = user?.email.toLowerCase() === "globalpathafrica@gmail.com";
+  const headerRef = useRef<HTMLElement>(null);
+  const closeMenus = () => {
+    headerRef.current?.querySelectorAll("details[open]").forEach((item) => {
+      item.removeAttribute("open");
+    });
+  };
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
+    <header ref={headerRef} className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur">
       <div className="hidden border-b border-white/10 bg-navy text-white md:block">
         <div className="container-page flex h-9 items-center justify-between text-xs">
           <div className="flex items-center gap-5">
@@ -71,7 +95,7 @@ export function Header({ user }: { user: AppUser | null }) {
           </div>
           <div className="flex items-center gap-2 text-white/80">
             <ShieldCheck size={14} />
-            Official sources, active deadlines and secure applications
+            Curated listings, active deadlines and secure applications
           </div>
         </div>
       </div>
@@ -91,10 +115,10 @@ export function Header({ user }: { user: AppUser | null }) {
               {item.label}
             </Link>
           ))}
-          <NavDropdown label="Scholarships" items={scholarshipNav} />
-          <NavDropdown label="Jobs Abroad" items={jobNav} />
+          <NavDropdown label="Scholarships" items={scholarshipNav} onNavigate={closeMenus} />
+          <GroupedNavDropdown label="Jobs Abroad" groups={jobNav} onNavigate={closeMenus} />
           {nav.slice(1).map((item) => (
-            <Link key={item.href} href={item.href} className="rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+            <Link key={item.href} href={item.href} onClick={closeMenus} className="rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
               {item.label}
             </Link>
           ))}
@@ -110,7 +134,7 @@ export function Header({ user }: { user: AppUser | null }) {
                 ["/contact", "Contact"],
                 ["/faq", "FAQ"]
               ].map(([href, label]) => (
-                <Link key={href} href={href} className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+                <Link key={href} href={href} onClick={closeMenus} className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
                   {label}
                 </Link>
               ))}
@@ -128,11 +152,11 @@ export function Header({ user }: { user: AppUser | null }) {
                   <span className="rounded bg-gold/15 px-1.5 py-0.5 text-[0.68rem] text-[#8a6416]">{membershipLabel(user.membershipType)}</span>
                 </summary>
                 <div className="absolute right-0 top-11 w-56 rounded-md border border-slate-200 bg-white p-2 shadow-xl">
-                  <AccountLink href="/dashboard" label="Dashboard" icon={<LayoutDashboard size={16} />} />
-                  <AccountLink href="/profile" label="Profile" icon={<UserPen size={16} />} />
-                  <AccountLink href="/applications" label="Applications" icon={<FileText size={16} />} />
-                  <AccountLink href="/payments" label="Payments" icon={<CreditCard size={16} />} />
-                  {isAdmin ? <AccountLink href="/admin" label="Admin Dashboard" icon={<ShieldCheck size={16} />} /> : null}
+                  <AccountLink href="/dashboard" label="Dashboard" icon={<LayoutDashboard size={16} />} onNavigate={closeMenus} />
+                  <AccountLink href="/profile" label="Profile" icon={<UserPen size={16} />} onNavigate={closeMenus} />
+                  <AccountLink href="/applications" label="Applications" icon={<FileText size={16} />} onNavigate={closeMenus} />
+                  <AccountLink href="/payments" label="Payments" icon={<CreditCard size={16} />} onNavigate={closeMenus} />
+                  {isAdmin ? <AccountLink href="/admin" label="Admin Dashboard" icon={<ShieldCheck size={16} />} onNavigate={closeMenus} /> : null}
                 </div>
               </details>
               <form action="/api/auth/logout" method="post">
@@ -159,9 +183,11 @@ export function Header({ user }: { user: AppUser | null }) {
           </summary>
           <div className="absolute right-0 top-12 max-h-[80vh] w-72 overflow-y-auto rounded-md border border-slate-200 bg-white p-3 shadow-xl">
             {mobileNav.map((item) => (
-              <Link key={item.href} href={item.href} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+              <Link key={item.href} href={item.href} onClick={closeMenus} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
                 {item.label === "Scholarships" && <GraduationCap size={16} />}
                 {item.label === "Jobs" && <BriefcaseBusiness size={16} />}
+                {item.label.includes("Sea") && <Ship size={16} />}
+                {item.label.includes("Healthcare") && <Stethoscope size={16} />}
                 {item.label === "Study Abroad" && <Plane size={16} />}
                 {item.label === "Language Training" && <BookOpenText size={16} />}
                 {item.label === "Visa Help" && <IdCard size={16} />}
@@ -180,7 +206,7 @@ export function Header({ user }: { user: AppUser | null }) {
   );
 }
 
-function NavDropdown({ label, items }: { label: string; items: Array<{ href: string; label: string }> }) {
+function NavDropdown({ label, items, onNavigate }: { label: string; items: Array<{ href: string; label: string }>; onNavigate: () => void }) {
   return (
     <details className="relative">
       <summary className="list-none rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
@@ -188,7 +214,7 @@ function NavDropdown({ label, items }: { label: string; items: Array<{ href: str
       </summary>
       <div className="absolute left-0 top-10 w-64 rounded-md border border-slate-200 bg-white p-2 shadow-xl">
         {items.map((item) => (
-          <Link key={item.href} href={item.href} className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+          <Link key={item.href} href={item.href} onClick={onNavigate} className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
             {item.label}
           </Link>
         ))}
@@ -197,9 +223,39 @@ function NavDropdown({ label, items }: { label: string; items: Array<{ href: str
   );
 }
 
-function AccountLink({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
+function GroupedNavDropdown({
+  label,
+  groups,
+  onNavigate
+}: {
+  label: string;
+  groups: Array<{ heading: string; items: Array<{ href: string; label: string }> }>;
+  onNavigate: () => void;
+}) {
   return (
-    <Link href={href} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+    <details className="relative">
+      <summary className="list-none rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+        {label}
+      </summary>
+      <div className="absolute left-0 top-10 w-72 rounded-md border border-slate-200 bg-white p-2 shadow-xl">
+        {groups.map((group) => (
+          <div key={group.heading} className="border-b border-slate-100 py-2 last:border-0">
+            <div className="px-3 pb-1 text-[0.68rem] font-bold uppercase tracking-wide text-gold">{group.heading}</div>
+            {group.items.map((item) => (
+              <Link key={item.href} href={item.href} onClick={onNavigate} className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+function AccountLink({ href, label, icon, onNavigate }: { href: string; label: string; icon: React.ReactNode; onNavigate: () => void }) {
+  return (
+    <Link href={href} onClick={onNavigate} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
       {icon}
       {label}
     </Link>

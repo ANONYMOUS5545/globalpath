@@ -9,7 +9,7 @@ import { getJobs, getPlatformStats, getScholarships } from "@/lib/data";
 import type { LucideIcon } from "lucide-react";
 
 const featureCards: Array<[LucideIcon, string, string]> = [
-  [GraduationCap, "Verified scholarship access", "Only active opportunities are displayed, with clear deadlines and official application links."],
+  [GraduationCap, "Verified scholarship access", "Only active opportunities are displayed, with clear deadlines and Global Path application tracking."],
   [BriefcaseBusiness, "Remote and onsite jobs", "Jobs are separated into useful categories with plan-aware access and direct applications."],
   [Languages, "Language training", "German, French, Dutch and English preparation stay part of the study and work pathway."],
   [IdCard, "Visa guidance", "Visa support keeps document order, proof preparation and interview readiness in the same platform."],

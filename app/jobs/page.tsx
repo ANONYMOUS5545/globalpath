@@ -4,7 +4,7 @@ import { JobCard } from "@/components/JobCard";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { getCurrentUser } from "@/lib/auth";
-import { getJobResources, getJobs, getJobSectors } from "@/lib/data";
+import { getJobs, getJobSectors } from "@/lib/data";
 import { accessTierLabel, workplaceLabel } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default async function JobsPage({ searchParams }: PageProps) {
     workplace: single(params.workplace),
     tier: single(params.tier)
   };
-  const [jobs, sectors, resources] = await Promise.all([getJobs(filters, user), getJobSectors(user), getJobResources()]);
+  const [jobs, sectors] = await Promise.all([getJobs(filters, user), getJobSectors(user)]);
   const remoteCount = jobs.filter((job) => job.workplaceType === "REMOTE").length;
   const onsiteCount = jobs.length - remoteCount;
 
@@ -85,6 +85,14 @@ export default async function JobsPage({ searchParams }: PageProps) {
             ))}
           </div>
 
+          <div className="mb-7 rounded-lg border border-gold/30 bg-white p-5">
+            <h2 className="font-heading text-xl font-extrabold text-navy">Premium members see more opportunities</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Upgrade to unlock more curated jobs, premium-only listings, application tracking, document upload support and priority guidance.
+            </p>
+            <Button href="/membership#premium" variant="gold" className="mt-4">View Premium Benefits</Button>
+          </div>
+
           {jobs.length ? (
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {jobs.map((item) => <JobCard key={item.id} job={item} />)}
@@ -97,25 +105,6 @@ export default async function JobsPage({ searchParams }: PageProps) {
               <Button href="/jobs" className="mt-5">Clear Filters</Button>
             </div>
           )}
-
-          <div className="mt-12">
-            <div className="mb-5">
-              <p className="font-accent text-xs font-bold uppercase tracking-[0.28em] text-gold">Resources</p>
-              <h2 className="mt-2 font-heading text-2xl font-extrabold text-navy">Trusted job application portals</h2>
-            </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              {resources.map((resource) => (
-                <article key={resource.id} className="rounded-lg border border-slate-200 bg-white p-5">
-                  <div className="mb-2 text-xs font-bold uppercase tracking-wide text-gold">{resource.category.split("_").join(" ")}</div>
-                  <h3 className="font-heading text-lg font-extrabold text-navy">{resource.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{resource.summary}</p>
-                  <a href={resource.applyUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-bold text-navy">
-                    Open official portal
-                  </a>
-                </article>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
     </>

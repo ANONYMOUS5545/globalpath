@@ -3,7 +3,7 @@ import { slugify } from "./format";
 
 export const brand = {
   name: "Global Path Africa",
-  email: process.env.SITE_EMAIL ?? "info@globalpathafrica.org",
+  email: process.env.SITE_EMAIL ?? "globalpathafrica@gmail.com",
   whatsappNumber: process.env.WHATSAPP_NUMBER ?? "254792579974",
   whatsappUrl: `https://wa.me/${process.env.WHATSAPP_NUMBER ?? "254792579974"}`,
   colors: {
@@ -610,6 +610,153 @@ export const fallbackScholarships = [
     coverageType: "PARTIAL",
     accessTier: "PREMIUM",
     isFeatured: false
+  }),
+  scholarship({
+    title: "University of Twente Scholarship",
+    provider: "University of Twente",
+    country: "Netherlands",
+    description:
+      "A competitive master's scholarship for excellent international students applying to eligible University of Twente graduate programmes.",
+    eligibility:
+      "Excellent academic record, admission to a qualifying master's programme, English language readiness and completion of the scholarship application requirements.",
+    benefits: "Partial tuition contribution with possible continuation support for a second study year where conditions are met.",
+    requiredDocuments: ["Admission letter", "Academic transcripts", "CV", "Motivation statement", "English proof"],
+    applicationProcess: [
+      "Apply for an eligible University of Twente master's programme.",
+      "Receive a student number after admission processing.",
+      "Submit the scholarship application before the 2026 round deadline."
+    ],
+    deadline: new Date("2026-12-01T23:59:00.000Z"),
+    officialUrl: "https://www.utwente.nl/en/education/scholarship-finder/university-of-twente-scholarship/",
+    sourceOrg: "University of Twente",
+    fieldOfStudy: "Multiple master's programmes",
+    degreeLevel: "POSTGRADUATE",
+    coverageType: "PARTIAL",
+    accessTier: "FREE",
+    isFeatured: true
+  }),
+  scholarship({
+    title: "University of Glasgow African Excellence Award",
+    provider: "University of Glasgow",
+    country: "United Kingdom",
+    description:
+      "Scholarship support for high-achieving African students pursuing eligible postgraduate taught study at the University of Glasgow.",
+    eligibility:
+      "African nationality or residence profile, strong academic record, offer for an eligible postgraduate taught programme and programme-specific criteria.",
+    benefits: "Tuition fee discount toward postgraduate study.",
+    requiredDocuments: ["Programme offer", "Academic records", "CV", "Personal statement", "Passport"],
+    applicationProcess: [
+      "Apply for an eligible University of Glasgow postgraduate taught course.",
+      "Prepare scholarship evidence and applicant profile.",
+      "Submit or confirm consideration before the listed funding deadline."
+    ],
+    deadline: new Date("2026-07-31T23:59:00.000Z"),
+    officialUrl: "https://www.gla.ac.uk/scholarships/",
+    sourceOrg: "University of Glasgow",
+    fieldOfStudy: "Multiple fields",
+    degreeLevel: "POSTGRADUATE",
+    coverageType: "PARTIAL",
+    accessTier: "PREMIUM",
+    isFeatured: false
+  }),
+  scholarship({
+    title: "Erasmus Mundus Joint Masters Scholarships",
+    provider: "European Commission",
+    country: "European Union",
+    description:
+      "Fully funded joint master's scholarships across European university consortia, including tuition, travel and living support for selected applicants.",
+    eligibility:
+      "Bachelor's degree or equivalent, programme-specific academic fit, strong motivation and full application to selected Erasmus Mundus programmes.",
+    benefits: "Tuition coverage, monthly living allowance and travel or installation support depending on the programme.",
+    requiredDocuments: ["Degree certificate", "Transcript", "CV", "Motivation letter", "References", "Language proof"],
+    applicationProcess: [
+      "Shortlist Erasmus Mundus programmes aligned with your background.",
+      "Prepare programme-specific documents and references.",
+      "Submit directly to the consortium before the 2026 intake deadline."
+    ],
+    deadline: new Date("2026-12-31T23:59:00.000Z"),
+    officialUrl: "https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-individuals/students/erasmus-mundus-joint-masters",
+    sourceOrg: "European Commission",
+    fieldOfStudy: "Joint master's programmes",
+    degreeLevel: "POSTGRADUATE",
+    coverageType: "FULL",
+    accessTier: "PREMIUM_PLUS",
+    isFeatured: true
+  }),
+  scholarship({
+    title: "Queen Elizabeth Commonwealth Scholarships",
+    provider: "Association of Commonwealth Universities",
+    country: "Commonwealth",
+    region: "Global",
+    description:
+      "Fully funded master's scholarships hosted by universities across Commonwealth countries, designed for students committed to creating change.",
+    eligibility:
+      "Citizen of an eligible Commonwealth country, completed undergraduate degree and fit with the host university programme requirements.",
+    benefits: "Tuition fees, living allowance, return economy flights and arrival allowance where applicable.",
+    requiredDocuments: ["Degree certificate", "Transcript", "References", "Study plan", "Passport"],
+    applicationProcess: [
+      "Review host universities and eligible programmes.",
+      "Prepare academic and motivation documents.",
+      "Submit the QECS application for the 2026 cycle."
+    ],
+    deadline: new Date("2026-11-24T23:59:00.000Z"),
+    officialUrl: "https://www.acu.ac.uk/funding-opportunities/for-students/scholarships/queen-elizabeth-commonwealth-scholarships/",
+    sourceOrg: "Association of Commonwealth Universities",
+    fieldOfStudy: "Multiple fields",
+    degreeLevel: "POSTGRADUATE",
+    coverageType: "FULL",
+    accessTier: "FREE",
+    isFeatured: true
+  }),
+  scholarship({
+    title: "University of Manitoba Graduate Fellowships",
+    provider: "University of Manitoba",
+    country: "Canada",
+    region: "North America",
+    description:
+      "Merit-based graduate fellowships for master's and doctoral students with strong academic standing and research potential.",
+    eligibility:
+      "Admission or continuing registration in eligible graduate study, strong GPA and department nomination or application route where required.",
+    benefits: "Graduate funding support for eligible master's and doctoral study.",
+    requiredDocuments: ["Graduate admission documents", "Academic transcripts", "Research statement", "CV", "References"],
+    applicationProcess: [
+      "Apply for the graduate programme and confirm department funding process.",
+      "Prepare research and academic evidence.",
+      "Submit materials before internal 2026 deadlines."
+    ],
+    deadline: new Date("2026-10-01T23:59:00.000Z"),
+    officialUrl: "https://umanitoba.ca/graduate-studies/funding-awards-and-financial-aid",
+    sourceOrg: "University of Manitoba",
+    fieldOfStudy: "Graduate research fields",
+    degreeLevel: "ALL",
+    coverageType: "FELLOWSHIP",
+    accessTier: "PREMIUM",
+    isFeatured: false
+  }),
+  scholarship({
+    title: "Australia Awards Scholarships",
+    provider: "Australian Government",
+    country: "Australia",
+    region: "Asia-Pacific",
+    description:
+      "Long-term development scholarships for eligible countries, supporting study at Australian universities and leadership development.",
+    eligibility:
+      "Citizenship and residency in an eligible country, relevant work or leadership profile, academic fit and country-specific priority area alignment.",
+    benefits: "Tuition, return air travel, living contribution, health cover and academic support as defined by the award.",
+    requiredDocuments: ["Academic records", "CV", "References", "Development impact statement", "Passport", "English proof"],
+    applicationProcess: [
+      "Check country eligibility and priority sectors.",
+      "Prepare academic and leadership evidence.",
+      "Submit the online application for the 2026 intake cycle."
+    ],
+    deadline: new Date("2026-10-30T23:59:00.000Z"),
+    officialUrl: "https://www.dfat.gov.au/people-to-people/australia-awards",
+    sourceOrg: "Australian Government",
+    fieldOfStudy: "Development priority fields",
+    degreeLevel: "ALL",
+    coverageType: "FULL",
+    accessTier: "PREMIUM_PLUS",
+    isFeatured: true
   })
 ];
 
@@ -878,6 +1025,158 @@ export const fallbackJobs = [
     workplaceType: "ONSITE",
     sector: "General Jobs",
     accessTier: "FREE",
+    isFeatured: false
+  }),
+  job({
+    title: "Remote Implementation Coordinator",
+    organization: "Doist",
+    location: "Remote - EMEA",
+    country: "Remote",
+    description:
+      "Coordinate onboarding, knowledge-base updates and customer implementation milestones for distributed teams adopting productivity tools.",
+    requirements:
+      "Remote operations experience, structured writing, customer onboarding skills and comfort with async collaboration.",
+    salaryRange: null,
+    deadline: new Date("2026-06-30T23:59:00.000Z"),
+    officialUrl: "https://doist.com/careers",
+    sourceOrg: "Doist Careers",
+    jobType: "FULL_TIME",
+    workplaceType: "REMOTE",
+    sector: "Remote Work",
+    accessTier: "FREE",
+    isFeatured: false
+  }),
+  job({
+    title: "Scholarship Programme Officer",
+    organization: "DAAD",
+    location: "Bonn, Germany",
+    country: "Germany",
+    description:
+      "Support scholarship programme administration, applicant communication, reporting and coordination with international university partners.",
+    requirements:
+      "Programme administration experience, strong writing, database discipline and German or English professional fluency depending on team needs.",
+    salaryRange: null,
+    deadline: new Date("2026-09-30T23:59:00.000Z"),
+    officialUrl: "https://www.daad.de/en/the-daad/jobs/",
+    sourceOrg: "DAAD Careers",
+    jobType: "FULL_TIME",
+    workplaceType: "HYBRID",
+    sector: "Education",
+    accessTier: "PREMIUM",
+    isFeatured: true
+  }),
+  job({
+    title: "Nurse Relocation Candidate Pool",
+    organization: "NHS Employers",
+    location: "United Kingdom",
+    country: "United Kingdom",
+    description:
+      "Healthcare roles and preparation pathway for internationally educated nurses targeting eligible UK employer recruitment routes.",
+    requirements:
+      "Nursing qualification, English test planning, registration readiness and careful document preparation for employer review.",
+    salaryRange: null,
+    deadline: new Date("2026-12-31T23:59:00.000Z"),
+    officialUrl: "https://www.healthcareers.nhs.uk/",
+    sourceOrg: "NHS Health Careers",
+    jobType: "FULL_TIME",
+    workplaceType: "ONSITE",
+    sector: "Healthcare",
+    accessTier: "PREMIUM",
+    isFeatured: false
+  }),
+  job({
+    title: "Cruise Guest Services Associate",
+    organization: "Viking Careers",
+    location: "Shipboard - Global",
+    country: "Global",
+    description:
+      "Guest-facing hospitality role supporting onboard service, communication and passenger experience on international cruise routes.",
+    requirements:
+      "Hospitality or customer service experience, strong spoken English, passport readiness and willingness to work onboard rotations.",
+    salaryRange: null,
+    deadline: new Date("2026-08-31T23:59:00.000Z"),
+    officialUrl: "https://www.vikingcareers.com/",
+    sourceOrg: "Viking Careers",
+    jobType: "CONTRACT",
+    workplaceType: "ONSITE",
+    sector: "Maritime",
+    accessTier: "FREE",
+    isFeatured: false
+  }),
+  job({
+    title: "Climate Data Assistant",
+    organization: "UN Environment Programme",
+    location: "Nairobi, Kenya",
+    country: "Kenya",
+    description:
+      "Support climate data collection, dashboards, partner reporting and programme evidence management for environmental initiatives.",
+    requirements:
+      "Data handling skills, spreadsheet or BI experience, climate or environment interest and strong report writing.",
+    salaryRange: null,
+    deadline: new Date("2026-07-15T23:59:00.000Z"),
+    officialUrl: "https://www.unep.org/about-un-environment-programme/careers",
+    sourceOrg: "UNEP Careers",
+    jobType: "CONTRACT",
+    workplaceType: "ONSITE",
+    sector: "International Development",
+    accessTier: "PREMIUM_PLUS",
+    isFeatured: true
+  }),
+  job({
+    title: "Remote QA Tester",
+    organization: "Testlio",
+    location: "Remote - Global",
+    country: "Remote",
+    description:
+      "Test web and mobile products, document defects clearly and support distributed quality teams across international client projects.",
+    requirements:
+      "Strong attention to detail, bug-report writing, device access and willingness to follow structured test cases.",
+    salaryRange: null,
+    deadline: new Date("2026-11-30T23:59:00.000Z"),
+    officialUrl: "https://testlio.com/careers/",
+    sourceOrg: "Testlio Careers",
+    jobType: "CONTRACT",
+    workplaceType: "REMOTE",
+    sector: "Technology",
+    accessTier: "FREE",
+    isFeatured: false
+  }),
+  job({
+    title: "International Admissions Assistant",
+    organization: "University of Manchester",
+    location: "Manchester, United Kingdom",
+    country: "United Kingdom",
+    description:
+      "Support international admissions documentation, applicant queries, offer processing and student conversion activity.",
+    requirements:
+      "Administrative accuracy, student services experience, strong email communication and comfort with admissions systems.",
+    salaryRange: null,
+    deadline: new Date("2026-10-05T23:59:00.000Z"),
+    officialUrl: "https://www.manchester.ac.uk/about/jobs/",
+    sourceOrg: "University of Manchester Jobs",
+    jobType: "FULL_TIME",
+    workplaceType: "HYBRID",
+    sector: "Education",
+    accessTier: "PREMIUM",
+    isFeatured: false
+  }),
+  job({
+    title: "Remote Grants Research Associate",
+    organization: "Devex",
+    location: "Remote - Africa/Europe time zones",
+    country: "Remote",
+    description:
+      "Research development funding opportunities, prepare donor briefs and maintain structured opportunity databases for programme teams.",
+    requirements:
+      "Research writing, donor landscape knowledge, spreadsheet discipline and ability to summarize funding eligibility clearly.",
+    salaryRange: null,
+    deadline: new Date("2026-09-20T23:59:00.000Z"),
+    officialUrl: "https://www.devex.com/jobs",
+    sourceOrg: "Devex Jobs",
+    jobType: "FULL_TIME",
+    workplaceType: "REMOTE",
+    sector: "International Development",
+    accessTier: "PREMIUM_PLUS",
     isFeatured: false
   })
 ];

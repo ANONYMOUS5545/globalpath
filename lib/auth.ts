@@ -104,7 +104,7 @@ export async function requireUser() {
 
 export async function requireAdminUser() {
   const user = await requireUser();
-  const adminEmail = (process.env.ADMIN_EMAIL ?? "admin@globalpathafrica.org").toLowerCase();
+  const adminEmail = (process.env.ADMIN_EMAIL ?? "globalpathafrica@gmail.com").toLowerCase();
   if (user.email.toLowerCase() !== adminEmail) redirect("/dashboard");
   return user;
 }

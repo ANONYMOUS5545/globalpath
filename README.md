@@ -51,7 +51,7 @@ copy .env.example .env
 ```bash
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/globalpath?schema=public"
 AUTH_SECRET="replace-with-at-least-32-random-characters"
-ADMIN_EMAIL="admin@globalpathafrica.org"
+ADMIN_EMAIL="globalpathafrica@gmail.com"
 ADMIN_PASSWORD="ChangeMe@2026"
 ```
 

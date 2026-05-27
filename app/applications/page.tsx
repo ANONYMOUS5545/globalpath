@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   title: "Applications"
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function ApplicationsPage() {
   const user = await requireUser();
   const applications = await getDashboardApplications(user.id);

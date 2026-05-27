@@ -18,7 +18,7 @@ const plans = [
     description: "For exploring active opportunities and preparing your first applications.",
     cta: "Start Free",
     href: "/register",
-    features: ["Browse free scholarships", "Browse free jobs", "Create application tracker", "Official source links", "Opportunity alerts"]
+    features: ["Browse free scholarships", "Browse free jobs", "Create application tracker", "Global Path applications", "Opportunity alerts"]
   },
   {
     id: "premium",

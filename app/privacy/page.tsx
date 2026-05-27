@@ -14,7 +14,7 @@ export default function PrivacyPage() {
           ["Data we collect", "We collect account details, membership status, application records and uploaded documents needed to provide the platform."],
           ["How data is used", "Your data is used to authenticate accounts, process applications, track status updates, provide support and improve opportunity quality."],
           ["Document security", "Uploaded documents are handled through secure server routes. Production deployments should connect uploads to private object storage."],
-          ["Third parties", "Payments and official application links may use external providers. We do not store card numbers or CVV data."]
+          ["Third parties", "Payments may use external providers. We do not store card numbers or CVV data."]
         ]}
       />
     </>

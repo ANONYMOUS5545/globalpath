@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const values: Array<[LucideIcon, string, string]> = [
-  [Globe2, "Global access", "Scholarships, study pathways and jobs from official sources across reputable institutions."],
+  [Globe2, "Global access", "Scholarships, study pathways and jobs curated from reputable institutions."],
   [ShieldCheck, "Trust first", "Active deadline filtering, secure accounts and clear application records keep the workflow reliable."],
   [UsersRound, "Human support", "Premium plans add practical guidance for documents, CVs, applications and next steps."]
 ];

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, CalendarDays, CheckCircle2, ExternalLink, FileText, LockKeyhole, MapPin } from "lucide-react";
+import { ArrowUpRight, CalendarDays, CheckCircle2, FileText, LockKeyhole, MapPin } from "lucide-react";
 import { ApplyForm } from "@/components/ApplyForm";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/Badge";
@@ -75,14 +75,9 @@ export default async function ScholarshipDetailPage({ params }: PageProps) {
                 <Row label="Level" value={degreeLabel(scholarship.degreeLevel)} />
                 <Row label="Coverage" value={coverageLabel(scholarship.coverageType)} />
               </dl>
-              <a
-                href={scholarship.officialUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md border border-navy/20 px-4 py-2.5 text-sm font-bold text-navy hover:bg-navy/5"
-              >
-                Official Source <ExternalLink size={16} />
-              </a>
+              <div className="mt-5 rounded-md bg-navy/5 p-3 text-sm font-semibold leading-6 text-navy">
+                Applications are handled inside Global Path. Sign in to submit and track this scholarship.
+              </div>
             </div>
 
             <div className="card-border rounded-lg bg-white p-5 premium-shadow">
@@ -95,9 +90,14 @@ export default async function ScholarshipDetailPage({ params }: PageProps) {
                   Login to Apply <ArrowUpRight size={16} />
                 </Button>
               ) : locked ? (
-                <Button href={upgradeTarget(scholarship.accessTier)} variant="gold" className="w-full">
-                  Upgrade to Apply
-                </Button>
+                <div className="space-y-3">
+                  <p className="rounded-md bg-gold/12 p-3 text-sm font-semibold leading-6 text-[#7a5b16]">
+                    Premium members unlock more scholarships, document support and stronger application guidance.
+                  </p>
+                  <Button href={upgradeTarget(scholarship.accessTier)} variant="gold" className="w-full">
+                    Upgrade to Apply
+                  </Button>
+                </div>
               ) : (
                 <ApplyForm type="SCHOLARSHIP" referenceId={scholarship.id} />
               )}

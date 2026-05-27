@@ -3,19 +3,22 @@ import { BarChart3, BriefcaseBusiness, GraduationCap, UsersRound } from "lucide-
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/Badge";
 import { requireAdminUser } from "@/lib/auth";
-import { getJobs, getPlatformStats, getScholarships } from "@/lib/data";
-import { accessTierLabel, deadlineLabel } from "@/lib/format";
+import { getAdminUserInsights, getJobs, getPlatformStats, getScholarships } from "@/lib/data";
+import { accessTierLabel, deadlineLabel, membershipLabel } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard"
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
   await requireAdminUser();
-  const [stats, scholarships, jobs] = await Promise.all([
+  const [stats, scholarships, jobs, userInsights] = await Promise.all([
     getPlatformStats(),
     getScholarships({}, { id: "admin", firstName: "Admin", lastName: "User", email: "", membershipType: "PREMIUM_PLUS", scholarshipAccess: true }),
-    getJobs({}, { id: "admin", firstName: "Admin", lastName: "User", email: "", membershipType: "PREMIUM_PLUS", scholarshipAccess: true })
+    getJobs({}, { id: "admin", firstName: "Admin", lastName: "User", email: "", membershipType: "PREMIUM_PLUS", scholarshipAccess: true }),
+    getAdminUserInsights()
   ]);
 
   return (
@@ -49,6 +52,53 @@ export default async function AdminDashboardPage() {
                 deadline: deadlineLabel(item.deadline)
               }))}
             />
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+            <div className="rounded-lg border border-slate-200 bg-white p-5 premium-shadow">
+              <h2 className="mb-4 font-heading text-xl font-extrabold text-navy">Recent users and activity</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[680px] text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-500">
+                      <th className="py-3 pr-4">User</th>
+                      <th className="py-3 pr-4">Country</th>
+                      <th className="py-3 pr-4">Plan</th>
+                      <th className="py-3 pr-4">Status</th>
+                      <th className="py-3">Last active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userInsights.users.map((user) => (
+                      <tr key={user.id} className="border-b border-slate-100 last:border-0">
+                        <td className="py-3 pr-4">
+                          <div className="font-semibold text-slate-800">{user.firstName} {user.lastName}</div>
+                          <div className="text-xs text-slate-500">{user.email}</div>
+                        </td>
+                        <td className="py-3 pr-4 text-slate-600">{user.country ?? "Not provided"}</td>
+                        <td className="py-3 pr-4"><Badge tone={user.membershipType === "FREE" ? "green" : "gold"}>{membershipLabel(user.membershipType)}</Badge></td>
+                        <td className="py-3 pr-4 text-slate-600">{user.status}</td>
+                        <td className="py-3 text-slate-600">{user.lastLogin ? user.lastLogin.toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric" }) : "Never"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-slate-200 bg-white p-5 premium-shadow">
+              <h2 className="mb-4 font-heading text-xl font-extrabold text-navy">Users by country</h2>
+              <div className="space-y-3">
+                {userInsights.countries.length ? userInsights.countries.map((item) => (
+                  <div key={item.country} className="flex items-center justify-between rounded-md border border-slate-100 p-3">
+                    <span className="font-semibold text-slate-700">{item.country}</span>
+                    <Badge tone="blue">{item.count}</Badge>
+                  </div>
+                )) : (
+                  <p className="text-sm text-slate-500">No user country data yet.</p>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">

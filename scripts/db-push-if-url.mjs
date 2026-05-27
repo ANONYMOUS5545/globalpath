@@ -11,7 +11,7 @@ if (!databaseUrl) {
   process.exit(0);
 }
 
-const result = spawnSync("npx", ["prisma", "db", "push", "--skip-generate"], {
+const result = spawnSync("npx", ["prisma", "db", "push"], {
   stdio: "inherit",
   shell: true,
   env: {

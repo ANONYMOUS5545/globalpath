@@ -30,6 +30,14 @@ function normalizeNeedle(value?: string) {
   return value?.trim().toLowerCase() ?? "";
 }
 
+function mergeBySlug<T extends { slug: string }>(fallbackItems: T[], databaseItems: T[]) {
+  const merged = new Map(fallbackItems.map((item) => [item.slug, item]));
+  for (const item of databaseItems) {
+    merged.set(item.slug, item);
+  }
+  return [...merged.values()];
+}
+
 function balanceByCountry(items: Scholarship[]) {
   const buckets = new Map<string, Scholarship[]>();
   for (const item of items) {
@@ -53,13 +61,11 @@ export async function getScholarships(filters: ScholarshipFilters = {}, user: Ap
   if (hasDatabaseUrl()) {
     const rows = await prisma.scholarship.findMany({
       where: {
-        isActive: true,
-        accessTier: filters.tier && allowed.includes(filters.tier as AccessTier) ? (filters.tier as AccessTier) : { in: allowed },
-        OR: [{ deadline: null }, { deadline: { gte: new Date() } }]
+        accessTier: filters.tier && allowed.includes(filters.tier as AccessTier) ? (filters.tier as AccessTier) : { in: allowed }
       },
       orderBy: [{ isFeatured: "desc" }, { deadline: "asc" }, { country: "asc" }]
     });
-    items = rows as Scholarship[];
+    items = mergeBySlug(fallbackScholarships, rows as Scholarship[]);
   }
 
   const search = normalizeNeedle(filters.search);
@@ -103,12 +109,11 @@ export async function getJobs(filters: JobFilters = {}, user: AppUser | null = n
   if (hasDatabaseUrl()) {
     const rows = await prisma.job.findMany({
       where: {
-        isActive: true,
         accessTier: filters.tier && allowed.includes(filters.tier as AccessTier) ? (filters.tier as AccessTier) : { in: allowed }
       },
       orderBy: [{ isFeatured: "desc" }, { deadline: "asc" }, { updatedAt: "desc" }]
     });
-    items = rows as Job[];
+    items = mergeBySlug(fallbackJobs, rows as Job[]);
   }
 
   const search = normalizeNeedle(filters.search);

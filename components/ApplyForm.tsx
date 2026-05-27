@@ -33,10 +33,10 @@ export function ApplyForm({ type, referenceId, disabled, disabledLabel }: ApplyF
           ["certificates", "Certificates or transcripts"],
           ["recommendation", "Recommendation letter"]
         ].map(([name, label]) => (
-          <label key={name} className="flex cursor-pointer items-center gap-3 rounded-md border border-dashed border-slate-300 bg-white p-3 text-sm text-slate-600 hover:border-navy">
+          <label key={name} className="grid cursor-pointer gap-2 rounded-md border border-dashed border-slate-300 bg-white p-3 text-sm text-slate-600 hover:border-navy sm:grid-cols-[18px_minmax(0,1fr)] sm:items-center">
             <UploadCloud size={18} className="text-navy" />
-            <span className="min-w-40 font-semibold">{label}</span>
-            <input name={name} type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" className="min-w-0 text-xs" />
+            <span className="min-w-0 font-semibold">{label}</span>
+            <input name={name} type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" className="min-w-0 text-xs sm:col-span-2" />
           </label>
         ))}
       </div>

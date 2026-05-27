@@ -14,6 +14,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PathBot } from "@/components/PathBot";
+import { BackToTop } from "@/components/BackToTop";
 import { getCurrentUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -41,14 +42,16 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const user = await getCurrentUser();
+  const isAdmin = user?.email.toLowerCase() === (process.env.ADMIN_EMAIL ?? "globalpathafrica@gmail.com").toLowerCase();
 
   return (
     <html lang="en">
       <body>
-        <Header user={user} />
+        <Header user={user} isAdmin={Boolean(isAdmin)} />
         <main>{children}</main>
         <Footer />
         <PathBot />
+        <BackToTop />
       </body>
     </html>
   );

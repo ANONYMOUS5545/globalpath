@@ -41,6 +41,15 @@ export default async function DashboardPage() {
                 <Star size={12} /> {membershipLabel(user.membershipType)}
               </Badge>
             </div>
+
+            {user.membershipType !== "FREE" ? (
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+                <h2 className="font-heading text-xl font-extrabold text-emerald-900">Premium features active</h2>
+                <p className="mt-2 text-sm leading-6 text-emerald-800">
+                  Premium listings, signed-in official source links, document-supported applications and status tracking are enabled for your account.
+                </p>
+              </div>
+            ) : null}
             <nav className="card-border rounded-lg bg-white p-3">
               {[
                 ["/dashboard", "Dashboard"],

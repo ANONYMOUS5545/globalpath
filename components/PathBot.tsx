@@ -37,7 +37,7 @@ export function PathBot() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-40 w-[min(360px,calc(100vw-24px))]">
+    <div className="fixed bottom-5 left-5 z-40 w-[min(360px,calc(100vw-24px))]">
       {open ? (
         <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xl">
           <div className="flex items-center justify-between bg-navy px-4 py-3 text-white">
@@ -85,7 +85,7 @@ export function PathBot() {
           </a>
         </div>
       ) : (
-        <button type="button" onClick={() => setOpen(true)} className="ml-auto flex h-12 items-center gap-2 rounded-full bg-navy px-4 text-sm font-bold text-white shadow-xl" aria-label="Open PathBot">
+        <button type="button" onClick={() => setOpen(true)} className="flex h-12 items-center gap-2 rounded-full bg-navy px-4 text-sm font-bold text-white shadow-xl" aria-label="Open PathBot">
           <MessageCircle size={18} />
           PathBot
         </button>

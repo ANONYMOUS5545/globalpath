@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Ship,
   Stethoscope,
+  ChevronDown,
   UserPen,
   UserRound
 } from "lucide-react";
@@ -27,33 +28,44 @@ import { membershipLabel } from "@/lib/format";
 
 const nav = [
   { href: "/", label: "Home" },
-  { href: "/study-abroad", label: "Study Abroad" },
-  { href: "/language-classes", label: "Language Training" },
-  { href: "/visas", label: "Visa Help" },
   { href: "/membership", label: "Membership" },
   { href: "/blog", label: "Blog" }
 ];
 
-const scholarshipNav = [
-  { href: "/scholarships", label: "All Scholarships" },
-  { href: "/scholarships?level=POSTGRADUATE", label: "Postgraduate" },
-  { href: "/scholarships?level=UNDERGRADUATE", label: "Undergraduate" },
-  { href: "/scholarships?level=PHD", label: "PhD Funding" },
-  { href: "/scholarship-support", label: "Application Support" }
+const scholarshipGroups = [
+  {
+    heading: "All Scholarships",
+    href: "/scholarships",
+    items: [
+      { href: "/scholarships?level=UNDERGRADUATE", label: "Undergraduate" },
+      { href: "/scholarships?level=POSTGRADUATE", label: "Postgraduate" },
+      { href: "/scholarships?level=PHD", label: "PhD Funding" },
+      { href: "/scholarships?coverage=FULL", label: "Fully Funded" },
+      { href: "/scholarships?tier=PREMIUM", label: "Premium Scholarships" }
+    ]
+  },
+  {
+    heading: "Scholarship Support",
+    href: "/scholarship-support",
+    items: [
+      { href: "/scholarship-support", label: "Application Support" },
+      { href: "/membership#scholarship-support", label: "Paid Review Support" }
+    ]
+  }
 ];
 
-const jobNav = [
+const jobGroups = [
   {
-    heading: "Work mode",
+    heading: "All Jobs",
+    href: "/jobs",
     items: [
-      { href: "/jobs", label: "All Jobs" },
       { href: "/jobs?category=remote", label: "Remote Jobs" },
       { href: "/jobs?category=onsite", label: "Onsite Jobs" },
       { href: "/jobs?workplace=HYBRID", label: "Hybrid Jobs" }
     ]
   },
   {
-    heading: "Job categories",
+    heading: "Job Categories",
     items: [
       { href: "/jobs?sector=Technology", label: "Technology" },
       { href: "/jobs?sector=Healthcare", label: "Healthcare and Caregiver" },
@@ -61,21 +73,37 @@ const jobNav = [
       { href: "/jobs?sector=Maritime", label: "Sea and Cruise Jobs" },
       { href: "/jobs?sector=Education", label: "Education" }
     ]
+  },
+  {
+    heading: "Resources",
+    href: "/job-resources",
+    items: [
+      { href: "/job-resources", label: "Application Resources" },
+      { href: "/jobs?tier=PREMIUM", label: "Premium Job Tracks" }
+    ]
   }
 ];
 
-const mobileNav = [
-  ...nav.slice(0, 1),
-  ...scholarshipNav,
-  ...jobNav.flatMap((group) => group.items),
-  ...nav.slice(1),
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-  { href: "/dashboard", label: "Dashboard" }
+const educationGroups = [
+  {
+    heading: "Education",
+    href: "/study-abroad",
+    items: [
+      { href: "/study-abroad", label: "Study Abroad" },
+      { href: "/language-classes", label: "Language Classes" },
+      { href: "/visas", label: "Visa Help" },
+      { href: "/membership#visa-support", label: "Visa Support" }
+    ]
+  }
 ];
 
-export function Header({ user }: { user: AppUser | null }) {
-  const isAdmin = user?.email.toLowerCase() === "globalpathafrica@gmail.com";
+const mobileGroups = [
+  { label: "Scholarships", groups: scholarshipGroups },
+  { label: "Jobs Abroad", groups: jobGroups },
+  { label: "Education", groups: educationGroups }
+];
+
+export function Header({ user, isAdmin }: { user: AppUser | null; isAdmin: boolean }) {
   const headerRef = useRef<HTMLElement>(null);
   const closeMenus = () => {
     headerRef.current?.querySelectorAll("details[open]").forEach((item) => {
@@ -109,14 +137,15 @@ export function Header({ user }: { user: AppUser | null }) {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 xl:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {nav.slice(0, 1).map((item) => (
             <Link key={item.href} href={item.href} className="rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
               {item.label}
             </Link>
           ))}
-          <NavDropdown label="Scholarships" items={scholarshipNav} onNavigate={closeMenus} />
-          <GroupedNavDropdown label="Jobs Abroad" groups={jobNav} onNavigate={closeMenus} />
+          <GroupedNavDropdown label="Scholarships" groups={scholarshipGroups} onNavigate={closeMenus} />
+          <GroupedNavDropdown label="Jobs Abroad" groups={jobGroups} onNavigate={closeMenus} />
+          <GroupedNavDropdown label="Education" groups={educationGroups} onNavigate={closeMenus} />
           {nav.slice(1).map((item) => (
             <Link key={item.href} href={item.href} onClick={closeMenus} className="rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
               {item.label}
@@ -177,24 +206,32 @@ export function Header({ user }: { user: AppUser | null }) {
           )}
         </div>
 
-        <details className="relative xl:hidden">
+        <details className="relative lg:hidden">
           <summary className="list-none rounded-md border border-slate-200 p-2 text-navy">
             <Menu size={22} />
           </summary>
           <div className="absolute right-0 top-12 max-h-[80vh] w-72 overflow-y-auto rounded-md border border-slate-200 bg-white p-3 shadow-xl">
-            {mobileNav.map((item) => (
-              <Link key={item.href} href={item.href} onClick={closeMenus} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
-                {item.label === "Scholarships" && <GraduationCap size={16} />}
-                {item.label === "Jobs" && <BriefcaseBusiness size={16} />}
-                {item.label.includes("Sea") && <Ship size={16} />}
-                {item.label.includes("Healthcare") && <Stethoscope size={16} />}
-                {item.label === "Study Abroad" && <Plane size={16} />}
-                {item.label === "Language Training" && <BookOpenText size={16} />}
-                {item.label === "Visa Help" && <IdCard size={16} />}
-                {item.label === "Blog" && <Newspaper size={16} />}
-                {item.label === "Dashboard" && <LayoutDashboard size={16} />}
-                {item.label}
-              </Link>
+            <MobileLink href="/" label="Home" onNavigate={closeMenus} />
+            {mobileGroups.map((section) => (
+              <details key={section.label} className="border-b border-slate-100 py-1">
+                <summary className="flex list-none items-center justify-between rounded-md px-3 py-2 text-sm font-extrabold text-navy">
+                  {section.label}
+                  <ChevronDown size={15} />
+                </summary>
+                {section.groups.map((group) => (
+                  <details key={group.heading} className="ml-2 py-1">
+                    <summary className="flex list-none items-center justify-between rounded-md px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100">
+                      {group.heading}
+                      <ChevronDown size={14} />
+                    </summary>
+                    {group.href ? <MobileLink href={group.href} label="View all" onNavigate={closeMenus} inset /> : null}
+                    {group.items.map((item) => <MobileLink key={item.href} href={item.href} label={item.label} onNavigate={closeMenus} inset />)}
+                  </details>
+                ))}
+              </details>
+            ))}
+            {[...nav.slice(1), { href: "/about", label: "About" }, { href: "/contact", label: "Contact" }, { href: "/dashboard", label: "Dashboard" }].map((item) => (
+              <MobileLink key={item.href} href={item.href} label={item.label} onNavigate={closeMenus} />
             ))}
             <div className="mt-2 border-t border-slate-100 pt-2">
               {user ? <Button href="/dashboard" className="w-full">My Dashboard</Button> : <Button href="/register" variant="gold" className="w-full">Create Account</Button>}
@@ -206,30 +243,13 @@ export function Header({ user }: { user: AppUser | null }) {
   );
 }
 
-function NavDropdown({ label, items, onNavigate }: { label: string; items: Array<{ href: string; label: string }>; onNavigate: () => void }) {
-  return (
-    <details className="relative">
-      <summary className="list-none rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
-        {label}
-      </summary>
-      <div className="absolute left-0 top-10 w-64 rounded-md border border-slate-200 bg-white p-2 shadow-xl">
-        {items.map((item) => (
-          <Link key={item.href} href={item.href} onClick={onNavigate} className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
-            {item.label}
-          </Link>
-        ))}
-      </div>
-    </details>
-  );
-}
-
 function GroupedNavDropdown({
   label,
   groups,
   onNavigate
 }: {
   label: string;
-  groups: Array<{ heading: string; items: Array<{ href: string; label: string }> }>;
+  groups: Array<{ heading: string; href?: string; items: Array<{ href: string; label: string }> }>;
   onNavigate: () => void;
 }) {
   return (
@@ -237,16 +257,24 @@ function GroupedNavDropdown({
       <summary className="list-none rounded-md px-2.5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
         {label}
       </summary>
-      <div className="absolute left-0 top-10 w-72 rounded-md border border-slate-200 bg-white p-2 shadow-xl">
+      <div className="absolute left-0 top-10 w-80 rounded-md border border-slate-200 bg-white p-2 shadow-xl">
         {groups.map((group) => (
-          <div key={group.heading} className="border-b border-slate-100 py-2 last:border-0">
-            <div className="px-3 pb-1 text-[0.68rem] font-bold uppercase tracking-wide text-gold">{group.heading}</div>
+          <details key={group.heading} className="border-b border-slate-100 py-1 last:border-0" open={groups.length === 1}>
+            <summary className="flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-2 text-sm font-extrabold text-navy hover:bg-slate-50">
+              <span>{group.heading}</span>
+              <ChevronDown size={15} />
+            </summary>
+            {group.href ? (
+              <Link href={group.href} onClick={onNavigate} className="ml-3 mt-1 block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+                View all
+              </Link>
+            ) : null}
             {group.items.map((item) => (
-              <Link key={item.href} href={item.href} onClick={onNavigate} className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
+              <Link key={item.href} href={item.href} onClick={onNavigate} className="ml-3 block rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
                 {item.label}
               </Link>
             ))}
-          </div>
+          </details>
         ))}
       </div>
     </details>
@@ -257,6 +285,23 @@ function AccountLink({ href, label, icon, onNavigate }: { href: string; label: s
   return (
     <Link href={href} onClick={onNavigate} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-navy">
       {icon}
+      {label}
+    </Link>
+  );
+}
+
+function MobileLink({ href, label, onNavigate, inset = false }: { href: string; label: string; onNavigate: () => void; inset?: boolean }) {
+  return (
+    <Link href={href} onClick={onNavigate} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 ${inset ? "ml-4" : ""}`}>
+      {label.includes("Scholarship") && <GraduationCap size={16} />}
+      {label.includes("Job") && <BriefcaseBusiness size={16} />}
+      {label.includes("Sea") && <Ship size={16} />}
+      {label.includes("Healthcare") && <Stethoscope size={16} />}
+      {label === "Study Abroad" && <Plane size={16} />}
+      {label === "Language Classes" && <BookOpenText size={16} />}
+      {label === "Visa Help" && <IdCard size={16} />}
+      {label === "Blog" && <Newspaper size={16} />}
+      {label === "Dashboard" && <LayoutDashboard size={16} />}
       {label}
     </Link>
   );

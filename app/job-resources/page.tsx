@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { BriefcaseBusiness, Filter, Search, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, Filter, Search, ShieldCheck } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { getCurrentUser } from "@/lib/auth";
 import { getJobResourceFacets, getJobResources } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default async function JobResourcesPage({ searchParams }: PageProps) {
     category: single(params.category),
     cost: single(params.cost)
   };
-  const [resources, facets] = await Promise.all([getJobResources(filters), getJobResourceFacets()]);
+  const [resources, facets, user] = await Promise.all([getJobResources(filters), getJobResourceFacets(), getCurrentUser()]);
 
   return (
     <>
@@ -87,7 +88,13 @@ export default async function JobResourcesPage({ searchParams }: PageProps) {
                       {resource.costNotes}
                     </div>
                   ) : null}
-                  <Button href="/jobs" className="mt-5 w-full">View Matching Jobs</Button>
+                  {user ? (
+                    <a href={resource.applyUrl} target="_blank" rel="noreferrer" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md border border-navy/20 px-4 py-2.5 text-sm font-bold text-navy hover:bg-navy/5">
+                      Official resource link <ArrowUpRight size={15} />
+                    </a>
+                  ) : (
+                    <Button href="/login?redirect=/job-resources" className="mt-5 w-full">Login to View Source</Button>
+                  )}
                 </article>
               ))}
             </div>

@@ -65,7 +65,7 @@ export default async function HomePage() {
               {[
                 [stats.scholarships, "Active scholarships"],
                 [stats.jobs, "Jobs and resources"],
-                [stats.users || "Secure", "Member platform"]
+                ["Private", "Member platform"]
               ].map(([value, label]) => (
                 <div key={label} className="rounded-lg border border-white/12 bg-white/9 p-4">
                   <div className="font-heading text-2xl font-extrabold text-gold">{value}</div>
@@ -163,8 +163,8 @@ export default async function HomePage() {
                   <CheckCircle2 size={18} className="text-gold" /> {item}
                 </div>
               ))}
-              <Button href="/register" variant="gold" className="w-full">
-                Create Free Account <UsersRound size={17} />
+              <Button href={user ? "/dashboard" : "/register"} variant="gold" className="w-full">
+                {user ? "Open Dashboard" : "Create Free Account"} <UsersRound size={17} />
               </Button>
             </div>
           </div>

@@ -88,13 +88,20 @@ export default async function ScholarshipsPage({ searchParams }: PageProps) {
             </div>
           </div>
 
-          <div className="mb-7 rounded-lg border border-gold/30 bg-white p-5">
-            <h2 className="font-heading text-xl font-extrabold text-navy">More scholarships are available with Premium</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Premium unlocks higher-value scholarship listings, document support, priority guidance and better application tracking.
-            </p>
-            <Button href="/membership#premium" variant="gold" className="mt-4">Compare Plans</Button>
-          </div>
+          {user?.membershipType === "FREE" || !user ? (
+            <div className="mb-7 rounded-lg border border-gold/30 bg-white p-5">
+              <h2 className="font-heading text-xl font-extrabold text-navy">More scholarships are available with Premium</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Premium unlocks higher-value scholarship listings, document support, priority guidance and better application tracking.
+              </p>
+              <Button href="/membership#premium" variant="gold" className="mt-4">Compare Plans</Button>
+            </div>
+          ) : (
+            <div className="mb-7 rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+              <h2 className="font-heading text-xl font-extrabold text-emerald-900">Premium scholarship access is active</h2>
+              <p className="mt-2 text-sm leading-6 text-emerald-800">Your current plan is already unlocking premium scholarship categories and source links after sign-in.</p>
+            </div>
+          )}
 
           {scholarships.length ? (
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">

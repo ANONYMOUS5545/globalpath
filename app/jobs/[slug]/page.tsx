@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, CalendarDays, LockKeyhole, MapPin } from "lucide-react";
+import { ArrowUpRight, CalendarDays, ExternalLink, LockKeyhole, MapPin } from "lucide-react";
 import { ApplyForm } from "@/components/ApplyForm";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/Badge";
@@ -39,8 +39,8 @@ export default async function JobDetailPage({ params }: PageProps) {
         description={`${job.organization} - ${job.location} - Deadline ${formatDate(job.deadline)}`}
       />
       <section className="py-10">
-        <div className="container-page grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <article className="card-border rounded-lg bg-white p-6 premium-shadow">
+        <div className="container-page grid min-w-0 gap-7 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <article className="card-border min-w-0 rounded-lg bg-white p-6 premium-shadow">
             <div className="mb-5 flex flex-wrap gap-2">
               <Badge tone="blue">{workplaceLabel(job.workplaceType)}</Badge>
               <Badge tone="gold">{jobTypeLabel(job.jobType)}</Badge>
@@ -68,7 +68,7 @@ export default async function JobDetailPage({ params }: PageProps) {
             </section>
           </article>
 
-          <aside className="space-y-4 lg:sticky lg:top-28 lg:self-start">
+          <aside className="min-w-0 space-y-4 lg:sticky lg:top-28 lg:self-start">
             <div className="card-border rounded-lg bg-white p-5 premium-shadow">
               <div className="mb-4 rounded-md bg-gold/12 p-4 text-center">
                 <CalendarDays className="mx-auto mb-2 text-[#8a6416]" size={24} />
@@ -81,14 +81,25 @@ export default async function JobDetailPage({ params }: PageProps) {
                 <Row label="Work mode" value={workplaceLabel(job.workplaceType)} />
                 <Row label="Access" value={accessTierLabel(job.accessTier)} />
               </dl>
-              <div className="mt-5 rounded-md bg-navy/5 p-3 text-sm font-semibold leading-6 text-navy">
-                Applications are handled inside Global Path. Sign in to submit and track this role.
-              </div>
+              {user ? (
+                <a
+                  href={job.officialUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md border border-navy/20 px-4 py-2.5 text-sm font-bold text-navy hover:bg-navy/5"
+                >
+                  Official job posting <ExternalLink size={16} />
+                </a>
+              ) : (
+                <div className="mt-5 rounded-md bg-navy/5 p-3 text-sm font-semibold leading-6 text-navy">
+                  Sign in to view the official posting link and submit through Global Path.
+                </div>
+              )}
             </div>
 
             <div className="card-border rounded-lg bg-white p-5 premium-shadow">
               <h2 className="mb-2 font-heading text-xl font-extrabold text-navy">Apply from Global Path</h2>
-              <p className="mb-4 text-sm leading-6 text-slate-600">Submit your documents and track review status from your member dashboard.</p>
+              <p className="mb-4 text-sm leading-6 text-slate-600">{user ? "Submit your documents and track review status from your member dashboard." : "Sign in or create an account to submit documents and track review status from your member dashboard."}</p>
               {!user ? (
                 <Button href={`/login?redirect=/jobs/${job.slug}`} className="w-full">
                   Login to Apply <ArrowUpRight size={16} />
@@ -115,9 +126,9 @@ export default async function JobDetailPage({ params }: PageProps) {
 
 function Row({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3 last:border-0">
+    <div className="flex flex-wrap items-start justify-between gap-2 border-b border-slate-100 pb-3 last:border-0">
       <dt className="text-slate-500">{label}</dt>
-      <dd className="flex items-center gap-1.5 text-right font-bold text-slate-800">
+      <dd className="flex min-w-0 items-center gap-1.5 break-words text-right font-bold text-slate-800">
         {icon} {value}
       </dd>
     </div>

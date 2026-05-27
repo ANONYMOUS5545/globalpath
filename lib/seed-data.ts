@@ -1358,7 +1358,7 @@ fallbackScholarships.push(
     benefits: "Tuition, fees, room and board, round-trip transportation and internship/field-study expenses where applicable.",
     requiredDocuments: ["Application form", "Resume", "Essays", "Recommendations", "Transcripts", "Language proof"],
     applicationProcess: ["Review eligible peace centers.", "Prepare essays and recommendations.", "Submit through the official Rotary application route."],
-    deadline: new Date("2026-05-15T23:59:00.000Z"),
+    deadline: new Date("2027-05-15T23:59:00.000Z"),
     officialUrl: "https://www.rotary.org/en/our-programs/peace-fellowships",
     sourceOrg: "Rotary International",
     fieldOfStudy: "Peace, conflict resolution and development",
